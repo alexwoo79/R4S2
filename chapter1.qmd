@@ -1,0 +1,9 @@
+---
+title: "chapter1"
+format: html
+---
+
+```{r}
+library(tidyverse)
+mpg
+```
