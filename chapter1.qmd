@@ -1,9 +1,150 @@
 ---
-title: "chapter1"
-format: html
+title: "R数据科学学习笔记"
+format: 
+  html:
+    theme: cosmo
+    toc: true
+    toc - depth: 3
+    code-fold: true
 ---
+
+# 1. Chapter 1
+
+## My First R Code Chunk
+
+my first R code chunk(@fig-penguins).
+
+```{r}
+#| label: fig-penguins
+#| fig-cap: "Dimensions of penguins across three species."
+#| fig-align: "center"
+#| fig-alt: "Scatter plot showing the relationship between flipper length and bill length for three penguin species."
+#| warning: false
+library(tidyverse, quietly = TRUE)
+library(palmerpenguins)
+penguins |>
+  ggplot(aes(x = flipper_length_mm, y = bill_length_mm)) +
+  geom_point(aes(color = species))
+```
+
+## My First chunk parameters
+
+```{r, echo=FALSE, message=FALSE}
+#| label: fig-mpg
+#| fig-cap: "Engine displacement vs. highway miles per gallon."
+#| fig-alt: "A scatter plot showing the relationship between engine displacement and highway miles per gallon for various car models."
+#| fig-align: "center"
+library(ggplot2)
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point()
+```
+
+## DT Package Example
+
+```{r}
+#| label: table
+#| tbl-cap: "使用 DT 包创建的交互式表格"
+#| tbl-alt: "An interactive table displaying the mtcars dataset."
+library(DT)
+datatable(mtcars)
+```
+
+## gt Package Example
+
+```{r}
+#| fig-cap: "使用 gt 包创建的表格"
+
+library(gt)
+
+data <- data.frame(
+  Name = c("Alice", "Bob", "Charlie"),
+  Age = c(25, 30, 35),
+  City = c("New York", "Los Angeles", "Chicago")
+)
+
+gt(data) %>%
+  tab_header(
+    title = "People Information",
+    subtitle = "A list of people and their details"
+  ) %>%
+  fmt_number(columns = vars(Age), decimals = 0) %>%
+  tab_source_note(source_note = "Data sourced from internal records")
+```
+
+## ggplot 中文字体显示需要安装 showtext 包
+
+```{r}
+library(showtext)
+showtext_auto()
+```
+
+# 2. 使用dplyr包进行数据操作
+
+## filter 行操作
+### On-time data for all flights that departed NYC (i.e. JFK, LGA or EWR) in 2013.
 
 ```{r}
 library(tidyverse)
-mpg
+library(nycflights13)
+flights
+glimpse(flights)
+```
+
+```{r}
+# 过滤出2013年1月份从JFK机场出发的航班
+jan_flights_jfk <- flights |>
+  filter(month == 1, year == 2013, origin == "JFK")
+
+filter(flights, month == 1 | month == 12)
+filter(flights, carrier %in% c("AA", "DL", "UA"))
+filter(flights, is.na(dep_time))
+filter(flights, !(arr_delay > 120 | dep_delay > 120))
+```
+
+## arrange 行排序
+```{r}
+arrange(flights, year, month, day)
+
+arrange(flights, desc(arr_delay))
+
+```
+
+## select 列选择
+```{r}
+select(flights, year, month, day)
+select(flights, year:day)
+select(flights, starts_with("dep"))
+select(flights, ends_with("time"))
+select(flights, contains("delay"))
+select(flights, matches("^(dep|arr)_(delay|time)$")) # 正则表达式
+select(flights, num_range("x", 1:3)) # 选择列名为 x1, x2, x3 的列
+
+rename(flights, departure_time = dep_time, arrival_time = arr_time)
+
+select(flights, flight, tailnum, everything())
+select(flights, -c(year, month, day))
+```
+
+## mutate 新增列
+```{r}
+flights_sml <- select(
+  flights,
+  year:day,
+  ends_with("delay"),
+  distance,
+  air_time
+) |>
+  mutate(
+    gain = arr_delay - dep_delay,
+    speed = distance / air_time * 60,
+    .keep = 'used'
+  )
+flights_sml
+
+transmute(
+  flights,
+  gain = arr_delay - dep_delay,
+  hours = air_time / 60,
+  gain_per_hour = gain / hours
+)
 ```
