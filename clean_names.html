@@ -95,6 +95,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#库" id="toc-库" class="nav-link active" data-scroll-target="#库">1.库</a></li>
   <li><a href="#读取数据并清理列名称" id="toc-读取数据并清理列名称" class="nav-link" data-scroll-target="#读取数据并清理列名称">2.读取数据并清理列名称</a></li>
   <li><a href="#对比前后列名称" id="toc-对比前后列名称" class="nav-link" data-scroll-target="#对比前后列名称">3.对比前后列名称</a></li>
+  <li><a href="#总结" id="toc-总结" class="nav-link" data-scroll-target="#总结">4.总结</a></li>
   </ul>
 </nav>
 </div>
@@ -212,8 +213,32 @@ $ active            &lt;chr&gt; "YES", "YES", "YES", "YES", "YES", "YES", "YES",
 <span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co"># compare_table &lt;- compare_names |&gt; filter(changed)</span></span>
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(compare_names)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-0d9420b5678f814f20c8" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-0d9420b5678f814f20c8">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11"],[1,2,3,4,5,6,7,8,9,10,11],["First Name","Last Name","Employee Status","Subject","Hire Date","% Allocated","Full time?","do not edit! ---&gt;","Certification","Certification","Active?"],["first_name","last_name","employee_status","subject","hire_date","percent_allocated","full_time","do_not_edit","certification","certification_2","active"],["first_name","last_name","employee_status","subject","hire_date","percent_allocated","full_time","do_not_edit","certification","certification_2","active"],[false,false,false,false,false,false,false,false,false,false,false]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>position<\/th>\n      <th>original<\/th>\n      <th>cleaned<\/th>\n      <th>cleaned_by_make_clean_names<\/th>\n      <th>changed<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":1},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"position","targets":1},{"name":"original","targets":2},{"name":"cleaned","targets":3},{"name":"cleaned_by_make_clean_names","targets":4},{"name":"changed","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-5db10002b6fedeecf920" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-5db10002b6fedeecf920">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11"],[1,2,3,4,5,6,7,8,9,10,11],["First Name","Last Name","Employee Status","Subject","Hire Date","% Allocated","Full time?","do not edit! ---&gt;","Certification","Certification","Active?"],["first_name","last_name","employee_status","subject","hire_date","percent_allocated","full_time","do_not_edit","certification","certification_2","active"],["first_name","last_name","employee_status","subject","hire_date","percent_allocated","full_time","do_not_edit","certification","certification_2","active"],[false,false,false,false,false,false,false,false,false,false,false]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>position<\/th>\n      <th>original<\/th>\n      <th>cleaned<\/th>\n      <th>cleaned_by_make_clean_names<\/th>\n      <th>changed<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":1},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"position","targets":1},{"name":"original","targets":2},{"name":"cleaned","targets":3},{"name":"cleaned_by_make_clean_names","targets":4},{"name":"changed","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="总结" class="level1">
+<h1>4.总结</h1>
+<p>通过使用 janitor 包的 clean_names() 函数，我们成功地将数据框的列名称进行了清理，使其符合 R 语言的命名规范。清理后的列名称更易读、更一致，有助于后续的数据操作和分析工作。通过对比清理前后的列名称，我们可以清晰地看到哪些列名称发生了变化，从而验证清理过程的有效性。</p>
+<p>查看列名的函数： - colnames(): 获取或设置数据框的列名称。 - names(): 获取或设置对象的名称属性，适用于多种对象类型，包括数据框。 - glimpse(): 来自 dplyr 包，提供数据框的结构概览，包括列名称和数据类型。 - str(): R 的基础函数，显示对象的结构信息，包括列名称和数据类型。</p>
+<p>处理第一行数据作为列名的函数： - row_to_names(): 来自 janitor 包，将指定行的数据提升为列名称，并删除该行。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>row_to_names_example <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">X1 =</span> <span class="fu">c</span>(<span class="st">"Name"</span>, <span class="st">"Age"</span>, <span class="st">"City"</span>),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">X2 =</span> <span class="fu">c</span>(<span class="st">"Alice"</span>, <span class="dv">25</span>, <span class="st">"New York"</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">X3 =</span> <span class="fu">c</span>(<span class="st">"Bob"</span>, <span class="dv">30</span>, <span class="st">"Los Angeles"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>row_to_names_example_cleaned <span class="ot">&lt;-</span> row_to_names_example <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_to_names</span>(<span class="at">row_number =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>()</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>row_to_names_example_cleaned</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  name  alice    bob        
+  &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;      
+1 Age   25       30         
+2 City  New York Los Angeles</code></pre>
 </div>
 </div>
 </section>
