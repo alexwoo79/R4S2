@@ -1,0 +1,417 @@
+Data: 
+
+1) https://github.com/rfordatascience/tidytuesday/blob/master/data/2023/2023-10-17/readme.md
+
+2) https://en.wikipedia.org/wiki/Taylor_Swift_albums_discography
+
+Colors: https://static.wikia.nocookie.net/taylor-swift/images/e/e2/Taylor_Swift_Red_Album_Art_Cover.jpg/revision/latest/scale-to-width-down/1000?cb=20220327092809
+
+```{r}
+highlight_color <- '#aa1845'
+non_highlight_color <- '#76635f'
+text_color <- '#131333'
+bg_color <- '#ebe7db'
+```
+
+```{r}
+# setwd(here::here('002_visuals/008_bubble_chart'))
+library(tidyverse)
+library(ggtext)
+taylor_album_songs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-10-17/taylor_album_songs.csv')
+```
+
+
+```{r}
+all_tables <- rvest::read_html('https://en.wikipedia.org/wiki/Taylor_Swift_albums_discography') |> 
+  rvest::html_table()
+
+us_sales_old_albums <- all_tables[[2]]  |> 
+  janitor::clean_names() |> 
+  select(album_name = title, sales = sales_a) |> 
+  slice(2:11) |> 
+  mutate(
+    sales = str_match_all(sales, '\\bUS: (.+)\\['),
+    sales = map_chr(sales, 2) |> parse_number()
+  )
+
+us_sales_new_albums <- all_tables[[3]]  |> 
+  janitor::clean_names() |> 
+  select(album_name = title, sales = sales_a) |> 
+  slice(2:11) |> 
+  mutate(
+    sales = str_match_all(sales, '\\bUS: (.+)\\['),
+    sales = map_chr(sales, 2) |> parse_number()
+  )
+
+us_sales_tib <- bind_rows(us_sales_old_albums, us_sales_new_albums) |> 
+  mutate(
+    album_name = if_else(
+      album_name %in% c('Reputation', 'Folklore', 'Evermore'),
+      str_to_lower(album_name),
+      album_name
+    )
+  )
+
+```
+
+```{r}
+taylor_bubble_dat <- taylor_album_songs |> 
+  summarise(
+    median_energy = median(energy, na.rm = TRUE),
+    .by = c(album_name, album_release)
+  ) |> 
+  left_join(us_sales_tib, by = 'album_name') |> 
+  arrange(album_release)
+```
+
+
+
+```{r}
+camcorder::gg_record(
+  dir = 'img',
+  device = 'png',
+  width = 16,
+  height = 9,
+  units = 'cm'
+)
+```
+
+
+```{r}
+ggplot(mapping = aes(x = album_release, median_energy, size = sales)) +
+  geom_point(
+    data = taylor_bubble_dat |> filter(median_energy <= 0.625),
+    fill = non_highlight_color, 
+    col = 'white', 
+    shape = 21
+  ) +
+  geom_point(
+    data = taylor_bubble_dat |> filter(median_energy > 0.625),
+    fill = highlight_color, 
+    col = 'white', 
+    shape = 21
+  )  + 
+  labs(
+    x = element_blank(),
+    y = element_blank(),
+    title = 'Earlier Taylor Swift Albums Were More Energetic and<br>Sold More Copies<span style="font-size:8pt"> (not counting streams and downloads)</span>',
+    subtitle = 'Median album energy level',
+  ) 
+```
+
+
+
+```{r}
+ggplot(mapping = aes(x = album_release, median_energy, size = sales)) +
+  geom_point(
+    data = taylor_bubble_dat |> filter(median_energy <= 0.625),
+    fill = non_highlight_color, 
+    col = 'white', 
+    shape = 21
+  ) +
+  geom_point(
+    data = taylor_bubble_dat |> filter(median_energy > 0.625),
+    fill = highlight_color, 
+    col = 'white', 
+    shape = 21
+  )  + 
+  labs(
+    x = element_blank(),
+    y = element_blank(),
+    title = 'Earlier Taylor Swift Albums Were More Energetic and<br>Sold More Copies<span style="font-size:8pt"> (not counting streams and downloads)</span>',
+    subtitle = 'Median album energy level',
+    caption =  'Data: TidyTuesday 2023 - Week 42 & Wikipedia'
+  ) +
+  theme_minimal(base_size = 12, base_family = 'Source Sans Pro') +
+  theme(
+    legend.position = 'none',
+    plot.background = element_rect(fill = bg_color, color = NA),
+    panel.grid = element_line(color = text_color, linetype = 2, linewidth = 0.05),
+    panel.grid.minor = element_blank(),
+    plot.title.position = 'plot',
+    axis.text = element_text(color = text_color),
+    plot.title = ggtext::element_markdown(
+      size = 16,
+      color = text_color,
+      face = 'bold',
+      lineheight = 1,
+      margin = margin(t = 1, b = 2, unit = 'mm')
+    ),
+    plot.subtitle = element_text(
+      size = 10, 
+      color = text_color, 
+      face = 'bold',
+      margin = margin(t = 4, unit = 'mm')
+    ),
+    plot.caption = element_text(size = 6, color = text_color)
+  )
+```
+
+
+
+
+```{r}
+ggplot(mapping = aes(x = album_release, median_energy, size = sales)) +
+  geom_point(
+    data = taylor_bubble_dat |> filter(median_energy <= 0.625),
+    fill = non_highlight_color, 
+    col = 'white', 
+    shape = 21
+  ) +
+  geom_point(
+    data = taylor_bubble_dat |> filter(median_energy > 0.625),
+    fill = highlight_color, 
+    col = 'white', 
+    shape = 21
+  )  + 
+  labs(
+    x = element_blank(),
+    y = element_blank(),
+    title = 'Earlier Taylor Swift Albums Were More Energetic and<br>Sold More Copies<span style="font-size:8pt"> (not counting streams and downloads)</span>',
+    subtitle = 'Median album energy level',
+    caption =  'Data: TidyTuesday 2023 - Week 42 & Wikipedia'
+  ) +
+  theme_minimal(base_size = 12, base_family = 'Source Sans Pro') +
+  theme(
+    legend.position = 'none',
+    plot.background = element_rect(fill = bg_color, color = NA),
+    panel.grid = element_line(color = text_color, linetype = 2, linewidth = 0.05),
+    panel.grid.minor = element_blank(),
+    plot.title.position = 'plot',
+    axis.text = element_text(color = text_color),
+    plot.title = ggtext::element_markdown(
+      size = 16,
+      color = text_color,
+      face = 'bold',
+      lineheight = 1,
+      margin = margin(t = 1, b = 2, unit = 'mm')
+    ),
+    plot.subtitle = element_text(
+      size = 10, 
+      color = text_color, 
+      face = 'bold',
+      margin = margin(t = 4, unit = 'mm')
+    ),
+    plot.caption = element_text(size = 6, color = text_color)
+  ) +
+  scale_size_area(max_size = 25) +
+  coord_cartesian(
+    xlim = c(make_date(2006), make_date(2025)),
+    ylim = c(0.25, 0.9)
+  )
+```
+
+
+
+```{r}
+number_formatter <- scales::label_number(
+  scale = 10^(-6),
+  accuracy = 0.1,
+  suffix = 'M'
+)
+date_formatter <- scales::label_date(
+  format = '%b %Y', 
+  locale = 'en_us.UTF-8'
+)
+
+taylor_bubble_dat <- taylor_bubble_dat |> 
+  mutate(
+    sales_label = number_formatter(sales),
+    album_label = glue::glue(
+      '{album_name}:<br>{date_formatter(album_release)}'
+    )
+  ) 
+```
+
+
+
+```{r}
+ggplot(mapping = aes(x = album_release, median_energy, size = sales)) +
+  geom_point(
+    data = taylor_bubble_dat |> filter(median_energy <= 0.625),
+    fill = non_highlight_color, 
+    col = 'white', 
+    shape = 21
+  ) +
+  geom_point(
+    data = taylor_bubble_dat |> filter(median_energy > 0.625),
+    fill = highlight_color, 
+    col = 'white', 
+    shape = 21
+  )  + 
+  geom_text(
+    data = taylor_bubble_dat |> filter(median_energy > 0.625),
+    aes(label = sales_label),
+    size = 4,
+    family = 'Source Sans Pro',
+    fontface = 'bold',
+    color = 'white'
+  ) +
+  geom_text(
+    data = taylor_bubble_dat |> filter(median_energy <= 0.625),
+    aes(label = sales_label),
+    size = 2,
+    hjust = 0.5 + c(0, 0, 0, 0, 0.1, 0, 0),
+    vjust = 0.5 + c(0, 0, 0, 0, -0.5, 0, 0),
+    family = 'Source Sans Pro',
+    fontface = 'bold',
+    color = 'white'
+  ) +
+  labs(
+    x = element_blank(),
+    y = element_blank(),
+    title = 'Earlier Taylor Swift Albums Were More Energetic and<br>Sold More Copies<span style="font-size:8pt"> (not counting streams and downloads)</span>',
+    subtitle = 'Median album energy level',
+    caption =  'Data: TidyTuesday 2023 - Week 42 & Wikipedia'
+  ) +
+  theme_minimal(base_size = 12, base_family = 'Source Sans Pro') +
+  theme(
+    legend.position = 'none',
+    plot.background = element_rect(fill = bg_color, color = NA),
+    panel.grid = element_line(color = text_color, linetype = 2, linewidth = 0.05),
+    panel.grid.minor = element_blank(),
+    plot.title.position = 'plot',
+    axis.text = element_text(color = text_color),
+    plot.title = ggtext::element_markdown(
+      size = 16,
+      color = text_color,
+      face = 'bold',
+      lineheight = 1,
+      margin = margin(t = 1, b = 2, unit = 'mm')
+    ),
+    plot.subtitle = element_text(
+      size = 10, 
+      color = text_color, 
+      face = 'bold',
+      margin = margin(t = 4, unit = 'mm')
+    ),
+    plot.caption = element_text(size = 6, color = text_color)
+  ) +
+  scale_size_area(max_size = 25) +
+  coord_cartesian(
+    xlim = c(make_date(2006), make_date(2025)),
+    ylim = c(0.25, 0.9)
+  )
+```
+
+
+
+```{r}
+ggplot(mapping = aes(x = album_release, median_energy, size = sales)) +
+  ggtext::geom_richtext(
+    data = taylor_bubble_dat |> filter(
+      str_detect(album_name, 'evermore', negate = TRUE)
+    ),
+    aes(
+      x = album_release +
+        c(-250, -200, -100, -225, -200, -175, -80, +225, -225) +
+        10, 
+      y = median_energy + 
+        c(-0.15, -0.145, -0.16, -0.11, +0.10, -0.1, 0.085, 0.005, -0.1125)-
+        0.005,
+      label = album_label
+    ),
+    size = 2.25,
+    family = 'Source Sans Pro',
+    fontface = 'bold',
+    color = text_color,
+    hjust = 0,
+    fill = bg_color,
+    label.color = NA,
+    label.padding = unit(0.25, 'mm'),
+    lineheight = 1
+  ) +
+  geom_point(
+    data = taylor_bubble_dat |> filter(median_energy <= 0.625),
+    fill = non_highlight_color, 
+    col = 'white', 
+    shape = 21
+  ) +
+  geom_point(
+    data = taylor_bubble_dat |> filter(median_energy > 0.625),
+    fill = highlight_color, 
+    col = 'white', 
+    shape = 21
+  )  + 
+  geom_text(
+    data = taylor_bubble_dat |> filter(median_energy > 0.625),
+    aes(label = sales_label),
+    size = 4,
+    family = 'Source Sans Pro',
+    fontface = 'bold',
+    color = 'white'
+  ) +
+  geom_text(
+    data = taylor_bubble_dat |> filter(median_energy <= 0.625),
+    aes(label = sales_label),
+    size = 2,
+    hjust = 0.5 + c(0, 0, 0, 0, 0.1, 0, 0),
+    vjust = 0.5 + c(0, 0, 0, 0, -0.5, 0, 0),
+    family = 'Source Sans Pro',
+    fontface = 'bold',
+    color = 'white'
+  ) +
+  labs(
+    x = element_blank(),
+    y = element_blank(),
+    title = 'Earlier Taylor Swift Albums Were More Energetic and<br>Sold More Copies<span style="font-size:8pt"> (not counting streams and downloads)</span>',
+    subtitle = 'Median album energy level',
+    caption =  'Data: TidyTuesday 2023 - Week 42 & Wikipedia'
+  ) +
+  theme_minimal(base_size = 12, base_family = 'Source Sans Pro') +
+  theme(
+    legend.position = 'none',
+    plot.background = element_rect(fill = bg_color, color = NA),
+    panel.grid = element_line(color = text_color, linetype = 2, linewidth = 0.05),
+    panel.grid.minor = element_blank(),
+    plot.title.position = 'plot',
+    axis.text = element_text(color = text_color),
+    plot.title = ggtext::element_markdown(
+      size = 16,
+      color = text_color,
+      face = 'bold',
+      lineheight = 1,
+      margin = margin(t = 1, b = 2, unit = 'mm')
+    ),
+    plot.subtitle = element_text(
+      size = 10, 
+      color = text_color, 
+      face = 'bold',
+      margin = margin(t = 4, unit = 'mm')
+    ),
+    plot.caption = element_text(size = 6, color = text_color)
+  ) +
+  scale_size_area(max_size = 25) +
+  coord_cartesian(
+    xlim = c(make_date(2006), make_date(2025)),
+    ylim = c(0.25, 0.9)
+  ) +
+  annotate(
+    'curve',
+    x = make_date(2019, 1),
+    xend = make_date(2020, 6),
+    y = 0.38,
+    yend = 0.5,
+    curvature = -0.2,
+    linewidth = 0.2,
+    color = text_color,
+  ) +
+  annotate(
+    'richtext',
+    x = make_date(2019, 1),
+    y = 0.38,
+    label = taylor_bubble_dat |> 
+      filter(str_detect(album_name, 'evermore')) |>
+      pull(album_label),
+    size = 2.25,
+    family = 'Source Sans Pro',
+    fontface = 'bold',
+    color = text_color,
+    hjust = 1,
+    vjust = 1,
+    fill = bg_color,
+    label.color = NA,
+    label.padding = unit(0.25, 'mm'),
+    lineheight = 1
+  )
+```

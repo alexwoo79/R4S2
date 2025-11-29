@@ -81,6 +81,7 @@ showtext_auto()
 # 2. 使用dplyr包进行数据操作
 
 ## filter 行操作
+
 ### On-time data for all flights that departed NYC (i.e. JFK, LGA or EWR) in 2013.
 
 ```{r}
@@ -102,6 +103,7 @@ filter(flights, !(arr_delay > 120 | dep_delay > 120))
 ```
 
 ## arrange 行排序
+
 ```{r}
 arrange(flights, year, month, day)
 
@@ -110,6 +112,7 @@ arrange(flights, desc(arr_delay))
 ```
 
 ## select 列选择
+
 ```{r}
 select(flights, year, month, day)
 select(flights, year:day)
@@ -126,6 +129,7 @@ select(flights, -c(year, month, day))
 ```
 
 ## mutate 新增列
+
 ```{r}
 flights_sml <- select(
   flights,
@@ -148,3 +152,9 @@ transmute(
   gain_per_hour = gain / hours
 )
 ```
+
+![across](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/2471e3f8-348e-470c-a162-3eea0606ff96.png?h=b363a0827ba5f0f01a5a1d180c92a435)
+
+![case_when](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/6ffcd6d6-c783-4087-ae76-99aa851663ed.png?h=cdc305bd6a2306b707493d9fd134ddba)
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/cb8d9c50-f48e-4c6d-a5b3-1d30ce0be2ad.png?h=2324beeb35f128adcdb4ab0e0996e706){fig-alt="filter"}
