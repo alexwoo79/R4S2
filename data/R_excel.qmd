@@ -1,0 +1,292 @@
+---
+title: "R for Excel user
+"
+format: html
+---
+
+# Loading Data
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(here)
+```
+
+```{r}
+ca_np <- read_csv(here("data", "ca_np.csv"))
+```
+
+```{r}
+ca_np |>
+  summary()
+```
+
+```{r}
+ci_np <- read_excel(here("data", "ci_np.xlsx"))
+ci_np
+```
+
+# GGplot2
+
+```{r}
+ggplot(data = ci_np, aes(x = year, y = visitors)) +
+  geom_line()
+```
+
+```{r}
+gg_base <- ggplot(data = ci_np, aes(x = year, y = visitors))
+gg_base + geom_point()
+gg_base + geom_col()
+gg_base + geom_area()
+```
+
+```{r}
+gg_base +
+  geom_line(
+    color = "purple",
+    linetype = "dashed"
+  )
+```
+
+```{r}
+gg_base +
+  geom_point(color = "purple", pch = 17, size = 4, alpha = 0.5)
+```
+
+```{r}
+gg_base +
+  geom_point(
+    aes(size = visitors, color = visitors),
+    alpha = 0.5
+  )
+```
+
+```{r}
+gg_base +
+  geom_col(aes(fill = visitors))
+```
+
+## theme
+
+```{r}
+gg_base +
+  geom_point(
+    aes(size = visitors, color = visitors),
+    alpha = 0.5
+  ) +
+  theme_minimal()
+```
+
+```{r}
+gg_base +
+  geom_line(linetype = "dotted") +
+  theme_bw() +
+  labs(
+    x = "Year",
+    y = "Annual park visitors",
+    title = "Channel Islands NP Visitation",
+    subtitle = "(1963 - 2016)"
+  )
+```
+
+```{r}
+gg_base +
+  geom_line(color = "purple") +
+  geom_point(color = "orange", aes(size = year), alpha = 0.5)
+```
+
+## multi-series ggplot graphs
+
+```{r}
+ggplot(
+  data = ca_np,
+  aes(x = year, y = visitors, group = park_name, colour = park_name)
+) +
+  geom_line()
+```
+
+```{r}
+gg_np <- ggplot(
+  data = ca_np,
+  aes(x = year, y = visitors, group = park_name, colour = park_name)
+)
+```
+
+```{r}
+gg_np +
+  geom_line(show.legend = FALSE) +
+  theme_light() +
+  labs(x = "year", y = "annual visitors") +
+  facet_wrap(~park_name)
+```
+
+```{r}
+ggsave(here("figures", "np_graph.jpg"), dpi = 180, width = 8, height = 7)
+```
+
+# Pivot table with dplyr
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(systemfonts)
+library(here)
+library(skimr) # install.packages('skimr')
+library(kableExtra) # install.packages('kableExtra')
+```
+
+```{r}
+lobsters <- read_xlsx(here("data/lobsters.xlsx"), skip = 4)
+```
+
+```{r}
+# explore data
+skimr::skim(lobsters)
+```
+
+```{r}
+lobsters |>
+  group_by(year) |>
+  summarise(count_by_year = n())
+```
+
+```{r}
+siteyear_summary <- lobsters |>
+  group_by(site, year) |>
+  summarise(
+    count_by_site_year = n(),
+    mean_size_mm = mean(size_mm, na.rm = TRUE),
+    sd_size_mm = sd(size_mm, na.rm = TRUE)
+  )
+
+```
+
+```{r}
+siteyear_summary %>%
+  kable()
+```
+
+```{r}
+siteyear_summary <- lobsters %>%
+  group_by(site, year) %>%
+  summarize(
+    count_by_siteyear = n(),
+    mean_size_mm = mean(size_mm, na.rm = TRUE),
+    sd_size_mm = sd(size_mm, na.rm = TRUE),
+    median_size_mm = median(size_mm, na.rm = TRUE)
+  )
+```
+
+```{r}
+ggplot(
+  data = siteyear_summary,
+  aes(x = year, y = median_size_mm, color = site)
+) +
+  geom_line()
+```
+
+```{r}
+ggsave(here("figures", "lobsters-line.png"))
+```
+
+```{r}
+ggplot(siteyear_summary, aes(x = year, y = median_size_mm)) +
+  geom_col() +
+  facet_wrap(~site)
+```
+
+```{r}
+lobsters %>%
+  count(site, year)
+
+## This is the same as:
+lobsters %>%
+  group_by(site, year) %>%
+  summarize(n = n()) %>%
+  ungroup()
+```
+
+# pivot_longer
+
+```{r}
+inverts <- read_excel(here("data", "inverts.xlsx"))
+```
+
+```{r}
+invert_longer <- pivot_longer(
+  data = inverts,
+  cols = c('2016', '2017', '2018'),
+  names_to = "year",
+  values_to = "sp_count"
+) |>
+  mutate(year = as.numeric(year))
+```
+
+```{r}
+class(invert_longer$year)
+```
+
+## pivot_wider
+
+```{r}
+invert_wider <- pivot_wider(
+  data = invert_longer,
+  names_from = common_name,
+  values_from = sp_count
+)
+```
+
+## janitor clean_names()
+
+-   janitor::clean_names(): update column headers to a case of your choosing
+-   janitor::get_dupes(): see all rows that are duplicates within variables you choose
+-   janitor::remove_empty(): remove empty rows and/or columns
+-   janitor::adorn\_\*(): jazz up tables
+
+```{r}
+library(janitor)
+invert_wider <- invert_wider |>
+  clean_names()
+
+names(invert_wider)
+
+```
+
+## tidyr::unite() and tidyr::separate() to combine or separate information in column(s)
+
+![](https://rstudio-conf-2020.github.io/r-for-excel/img/rstudio-cheatsheet-unite.png)
+
+![](https://rstudio-conf-2020.github.io/r-for-excel/img/rstudio-cheatsheet-separate.png)
+
+## stringr::str_replace() to replace a pattern
+
+```{r}
+ca_abbr <- inverts %>%
+  mutate(
+    common_name = str_replace(
+      common_name,
+      pattern = "california",
+      replacement = "CA"
+    )
+  )
+```
+
+# filter , join
+
+
+
+`stringr::str_detect()` to find and keep observations that contain our specified string pattern.
+
+Let’s detect and keep observations from **fish** where the **common_name** variable contains string pattern “black.” Note that there are two fish, blacksmith and black surfperch, that would satisfy this condition.
+
+Using `filter()` + `str_detect()` in combination to find and keep observations where the **site**
+
+
+```{r}
+inverts |>
+  filter(
+    stringr::str_detect(common_name, pattern = 'rock')
+  )
+```
+
+![](https://rstudio-conf-2020.github.io/r-for-excel/img/rstudio-cheatsheet-combine-options1.png)

@@ -8,6 +8,10 @@ format:
     code-fold: false
 ---
 
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/352c905d-7be3-4808-9514-1fac3b0fe2fc.png?h=f8615631836782f2bb8174cb701b27d0)
+
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/9a306c0a-dac8-413d-ba2e-cc7fd4c4d5c8.png?h=d717f64562906ed3c4f3013ad33fb27e)
+
 # 1. From youtube ggplot2 tutorial
 
 ## My First ggplot2 Code Chunk
@@ -88,7 +92,6 @@ ggplot() +
   )
 ```
 
-
 ```{r}
 ggplot() +
   stat_bin(
@@ -147,7 +150,6 @@ ggplot() +
   )
 ```
 
-
 ```{r}
 ggplot() +
   geom_jitter(
@@ -171,7 +173,6 @@ ggplot() +
   theme_minimal(base_size = 16)
 ```
 
-
 ```{r}
 ggplot() +
   geom_histogram(
@@ -185,7 +186,6 @@ ggplot() +
   theme(legend.position = 'none')
 ```
 
-
 ```{r}
 gapminder::gapminder |>
   ggplot(
@@ -198,6 +198,7 @@ gapminder::gapminder |>
   geom_jitter(size = 2, alpha = 0.2) +
   geom_smooth()
 ```
+
 ```{r}
 gapminder::gapminder |> 
   ggplot(
@@ -217,7 +218,6 @@ gapminder::gapminder |>
     caption = 'Data: Gapminder R package'
   )
 ```
-
 
 ```{r}
 gapminder::gapminder |> 

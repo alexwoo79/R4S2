@@ -10,6 +10,8 @@ format:
 
 # 1.库
 
+![janitor::clean_names](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/79a12c01-0cc1-4643-b1e7-8ce8cafc947b.png?h=4629f141b6a3b4889b5fca17d1aee45a)
+
 ```{r}
 #| label: setup
 
@@ -21,6 +23,7 @@ suppressPackageStartupMessages({
   library(dplyr)
 })
 ```
+
 ```{r}
 #｜label: load-libraries
 #| warning: false
@@ -30,6 +33,7 @@ library(tibble)
 ```
 
 # 2.读取数据并清理列名称
+
 ```{r}
 roster_raw <- read_excel(here("clean_data", "dirty_data.xlsx")) 
 glimpse(roster_raw)
@@ -41,6 +45,7 @@ glimpse(roster_raw2)
 ```
 
 # 3.对比前后列名称
+
 ```{r}
 orig_names <- roster_raw |>
   slice_head(n = 1) |>
@@ -74,16 +79,12 @@ datatable(compare_names)
 ```
 
 # 4.总结
+
 通过使用 janitor 包的 clean_names() 函数，我们成功地将数据框的列名称进行了清理，使其符合 R 语言的命名规范。清理后的列名称更易读、更一致，有助于后续的数据操作和分析工作。通过对比清理前后的列名称，我们可以清晰地看到哪些列名称发生了变化，从而验证清理过程的有效性。
 
-查看列名的函数：
-- colnames(): 获取或设置数据框的列名称。
-- names(): 获取或设置对象的名称属性，适用于多种对象类型，包括数据框。
-- glimpse(): 来自 dplyr 包，提供数据框的结构概览，包括列名称和数据类型。
-- str(): R 的基础函数，显示对象的结构信息，包括列名称和数据类型。
+查看列名的函数： - colnames(): 获取或设置数据框的列名称。 - names(): 获取或设置对象的名称属性，适用于多种对象类型，包括数据框。 - glimpse(): 来自 dplyr 包，提供数据框的结构概览，包括列名称和数据类型。 - str(): R 的基础函数，显示对象的结构信息，包括列名称和数据类型。
 
-处理第一行数据作为列名的函数：
-- row_to_names(): 来自 janitor 包，将指定行的数据提升为列名称，并删除该行。
+处理第一行数据作为列名的函数： - row_to_names(): 来自 janitor 包，将指定行的数据提升为列名称，并删除该行。
 
 ```{r}
 row_to_names_example <- tibble(

@@ -158,3 +158,43 @@ transmute(
 ![case_when](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/6ffcd6d6-c783-4087-ae76-99aa851663ed.png?h=cdc305bd6a2306b707493d9fd134ddba)
 
 ![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/cb8d9c50-f48e-4c6d-a5b3-1d30ce0be2ad.png?h=2324beeb35f128adcdb4ab0e0996e706){fig-alt="filter"}
+
+# dpylr across 示例
+```{r}
+library(tidyverse)
+mpg |>
+  mutate(across(
+    where(is.character),
+    as.factor
+  )) |>
+  glimpse()
+
+```
+
+
+```{r}
+mpg |>
+  mutate(across(
+    where(is.character),
+    as.factor
+  )) |>
+  mutate(
+    size = case_when(
+      displ < 2 ~ "small",
+      displ >= 2 & displ < 4 ~ "medium",
+      displ >= 4 ~ "large"
+    )
+  )
+
+```
+
+
+```{r}
+mpg |>
+  group_by(manufacturer) |>
+  summarise(across(
+    where(is.numeric) & contains('y'),
+    mean
+  ))
+
+```

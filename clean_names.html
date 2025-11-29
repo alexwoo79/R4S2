@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.12">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="clean_names_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="clean_names_files/libs/quarto-html/anchor.min.js"></script>
 <link href="clean_names_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="clean_names_files/libs/quarto-html/quarto-syntax-highlighting-cdaacfc258cb6f151192107f105ac881.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="clean_names_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="clean_names_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="clean_names_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="clean_names_files/libs/bootstrap/bootstrap-a74871fe4945b66d259aafc266475145.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -122,6 +122,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="库" class="level1">
 <h1>1.库</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/79a12c01-0cc1-4643-b1e7-8ce8cafc947b.png?h=4629f141b6a3b4889b5fca17d1aee45a" class="img-fluid figure-img"></p>
+<figcaption>janitor::clean_names</figcaption>
+</figure>
+</div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">message =</span> <span class="cn">FALSE</span>, <span class="at">warning =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -213,8 +219,8 @@ $ active            &lt;chr&gt; "YES", "YES", "YES", "YES", "YES", "YES", "YES",
 <span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co"># compare_table &lt;- compare_names |&gt; filter(changed)</span></span>
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(compare_names)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-5db10002b6fedeecf920" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-5db10002b6fedeecf920">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11"],[1,2,3,4,5,6,7,8,9,10,11],["First Name","Last Name","Employee Status","Subject","Hire Date","% Allocated","Full time?","do not edit! ---&gt;","Certification","Certification","Active?"],["first_name","last_name","employee_status","subject","hire_date","percent_allocated","full_time","do_not_edit","certification","certification_2","active"],["first_name","last_name","employee_status","subject","hire_date","percent_allocated","full_time","do_not_edit","certification","certification_2","active"],[false,false,false,false,false,false,false,false,false,false,false]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>position<\/th>\n      <th>original<\/th>\n      <th>cleaned<\/th>\n      <th>cleaned_by_make_clean_names<\/th>\n      <th>changed<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":1},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"position","targets":1},{"name":"original","targets":2},{"name":"cleaned","targets":3},{"name":"cleaned_by_make_clean_names","targets":4},{"name":"changed","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-37fc0065affe63e7cd6a" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-37fc0065affe63e7cd6a">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11"],[1,2,3,4,5,6,7,8,9,10,11],["First Name","Last Name","Employee Status","Subject","Hire Date","% Allocated","Full time?","do not edit! ---&gt;","Certification","Certification","Active?"],["first_name","last_name","employee_status","subject","hire_date","percent_allocated","full_time","do_not_edit","certification","certification_2","active"],["first_name","last_name","employee_status","subject","hire_date","percent_allocated","full_time","do_not_edit","certification","certification_2","active"],[false,false,false,false,false,false,false,false,false,false,false]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>position<\/th>\n      <th>original<\/th>\n      <th>cleaned<\/th>\n      <th>cleaned_by_make_clean_names<\/th>\n      <th>changed<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":1},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"position","targets":1},{"name":"original","targets":2},{"name":"cleaned","targets":3},{"name":"cleaned_by_make_clean_names","targets":4},{"name":"changed","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
