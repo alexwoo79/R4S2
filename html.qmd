@@ -1,0 +1,53 @@
+---
+title: "R html爬虫"
+format: 
+  html:
+    theme: cosmo
+    toc: true
+    toc - depth: 3
+    code-fold: false
+---
+
+# library(rvest)
+
+
+```{r}
+library(tidyverse)
+# install.packages('rvest')
+library(rvest)
+```
+
+
+```{r}
+html_content <- read_html(
+  'https://en.wikipedia.org/w/index.php?title=The_Lego_Movie&oldid=998422565'
+)
+html_content |>
+  html_element('.tracklist') |>
+  html_table() |>
+  janitor::clean_names() |>
+  mutate(
+    title = str_replace_all(title, '\"', ''),
+    performer_s = str_replace_all(performer_s, '\"', '')
+  ) |>
+  select(-no) |>
+  DT::datatable()
+
+```
+
+
+
+```{r}
+html <- minimal_html(
+  "
+  <ul>
+    <li><b>C-3PO</b> is a <i>droid</i> that weighs <span class='weight'>167 kg</span></li>
+    <li><b>R2-D2</b> is a <i>droid</i> that weighs <span class='weight'>96 kg</span></li>
+    <li><b>Yoda</b> weighs <span class='weight'>66 kg</span></li>
+    <li><b>R4-P17</b> is a <i>droid</i></li>
+  </ul>
+"
+)
+li <- html |> html_elements("li") |> html_text()
+li
+```
