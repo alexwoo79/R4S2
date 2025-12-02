@@ -1,0 +1,605 @@
+---
+title: "The R book （3rd）"
+format: html
+---
+
+# 学习
+
+```{r}
+library(scales)
+```
+
+```{r}
+x <- seq(0, 10, 0.01)
+plot(x, exp(x), ylab = 'y', type = "l", col = scales::hue_pal()(2)[1])
+plot(x, log(x), ylab = 'z', type = "l", col = scales::hue_pal()(2)[2])
+```
+
+```{r}
+x <- seq(0, 2 * pi, 0.01)
+sinx <- sin(x)
+cosx <- cos(x)
+tanx <- tan(x)
+plot(
+  x,
+  sinx,
+  ylim = c(-3, 3),
+  ylab = "",
+  type = "l",
+  col = scales::hue_pal()(3)[1]
+)
+lines(x, cosx, col = scales::hue_pal()(3)[2])
+lines(x, tanx, col = scales::hue_pal()(3)[3])
+legend(
+  2,
+  3,
+  legend = c("sin (x)", "cos (x)", "tan (x)"),
+  lwd = rep(1, 3),
+  col = scales::hue_pal()(3),
+  bty = "n"
+)
+```
+
+```{r}
+library(scales)
+x <- seq(0, 2, 0.01)
+plot(
+  x,
+  1 / x^2,
+  type = "l",
+  ylab = expression(x^b),
+  col = hue_pal()(6)[1],
+  ylim = c(0, 4)
+)
+lines(x, 1 / x, col = hue_pal()(6)[2])
+abline(h = 1, col = hue_pal()(6)[3])
+lines(x, x^0.5, col = hue_pal()(6)[4])
+lines(x, x, col = hue_pal()(6)[5])
+lines(x, x^2, col = hue_pal()(6)[6])
+legend(
+  0.9,
+  4,
+  bty = "n",
+  legend = c("b = -2", "b = -1", "b = 0", "b = 0.5", "b = 1", "b = 2"),
+  col = hue_pal()(6),
+  lwd = 1
+)
+```
+
+```{r}
+library(scales)
+x <- seq(0, 10, 0.01)
+y = 5 * x - 0.2 * x^2
+plot(x, y, type = "l", col = hue_pal()(4)[1], xaxt = "n", yaxt = "n")
+y = 5 * x - 0.4 * x^2
+plot(x, y, type = "l", col = hue_pal()(4)[2], xaxt = "n", yaxt = "n")
+y = 2 + 4 * x - 0.6 * x^2 + 0.04 * x^3
+plot(x, y, type = "l", col = hue_pal()(4)[3], xaxt = "n", yaxt = "n")
+y = 2 + 4 * x + 2 * x^2 - 0.6 * x^3 + 0.04 * x^4
+plot(x, y, type = "l", col = hue_pal()(4)[4], xaxt = "n", yaxt = "n")
+```
+
+```{r}
+A <- matrix(c(1, 0, 4, 2, -1, 1), nrow = 3)
+A
+B <- matrix(c(1, -1, 2, 1, 1, 0), ncol = 3)
+B
+```
+
+用 matrix() 将该向量按 nrow = 3（3 行）排列为矩阵，默认按列填充。
+
+| **提取方式** | **语法示例** | **结果（基于矩阵 `A`）** | **说明** |
+|------------------|------------------|------------------|------------------|
+| **单下标（列优先）** | `A[1]` | `1` | 第 1 列第 1 行 |
+|  | `A[4]` | `2` | 第 2 列第 1 行（列优先遍历） |
+| **多下标（行，列）** | `A[1, 2]` | `2` | 第 1 行第 2 列 |
+|  | `A[3, ]` | `4 1` | 第 3 行的所有列 |
+|  | `A[, 1]` | `1 0 4` | 第 1 列的所有行 |
+| **范围提取** | `A[1:2, 2]` | `2 -1` | 第 1-2 行、第 2 列 |
+|  | `A[, c(1, 2)]` | 整个矩阵 | 选择第 1、2 列（等价于`A`） |
+| **排除行 / 列** | `A[-1, ]` | 第 2-3 行的所有列 | `-1` 表示排除第 1 行 |
+|  | `A[, -2]` | 第 1 列的所有行 | `-2` 表示排除第 2 列 |
+| **条件筛选（逻辑向量）** | `A[A > 0]` | `1 4 2 1` | 提取所有大于 0 的元素 |
+| **按行优先提取（转置）** | `t(A)[4]` | `4` | 转置后按列优先（等价原矩阵行优先） |
+
+```{r}
+
+C <- A %*% B
+
+C
+```
+
+```{r}
+# 行列式计算
+
+det(C)
+
+# if (!is.matrix(A)) {
+#   A <- as.matrix(A)
+# }
+# if (nrow(A) == ncol(A)) {
+#   detA <- det(A)
+# } else {
+#   stop("A is not square: nrow = ", nrow(A), ", ncol = ", ncol(A))
+# }
+```
+
+```{r}
+A <- matrix(c(1, 2, 3, 4, 1, 1, 3, 3, 2), nrow = 3)
+A
+solve(A)
+```
+
+Suppose we have two linear equations containing two unknown variables that we can reorganise so that they are laid out in a similar fashion: \* 3x +4y= 12 \* x +2y= 8. (2.2) () to find the values of the variables if we provide it with two Then, we can use the function solve matrices: • a square matrix A containing the coefficients of the variables (3, 4, 1, 2), laid out as above; • a column vector k containing the known values (12 and 8). We set the two matrices up like this (column-wise, as usual), and solve: Av= k,
+
+```{r}
+A <- matrix(c(3, 1, 4, 2), nrow = 2)
+k <- matrix(c(12, 8), nrow = 2)
+v <- solve(A, k)
+
+v
+```
+
+# 求导表达式
+
+```{r}
+D(expression(2 * x^3), "x")
+```
+
+# Calculations
+
+```{r}
+log(42 / 7.3)
+sum(1, 2, 3, 4, 5, 6, 6, 7)
+z <- 3.5 - 8i
+Re(z)
+Im(z)
+Mod(z)
+Arg(z)
+Conj(z)
+3^2 / 2
+119 %/% 13 # modular arithmetic ,in python using '//'
+
+```
+
+```{r}
+x <- 0:6
+length(x)
+x < 4
+all(x > 0)
+any(x < 0)
+sum(x < 4) # meaning count
+(x < 4) * runif(7)
+(x < 4) * 2 # True is 1，False is 0
+(treatment <- letters[1:5])
+(t2 <- factor(
+  1 + (treatment == "b") + 2 * (treatment == "c") + 2 * (treatment == "d")
+))
+0:10
+letters
+month.abb
+month.name
+class(month.abb)
+mode(month.abb)
+typeof(month.abb)
+class(unlist(month.abb))
+month.abb[1]
+
+
+```
+
+```{r}
+N <- c(55, 76, 92, 103, 84, 88, 121, 91, 65, 77, 99)
+N_factor <- seq(from = 0.04, by = 0.01, along = N)
+
+df <- tibble::tibble(N, N_factor)
+df
+```
+
+# Generating repeats
+
+```{r}
+rep(9, 5)
+rep(1:4, 2)
+rep(1:4, each = 2)
+rep(1:4, each = 2, times = 3)
+rep(1:4, 1:4)
+rep(1:4, c(4, 1, 4, 2))
+rep(c("cat", "dog", "gerbil", "goldfish", "rat"), c(2, 3, 2, 1, 3))
+```
+
+# Generating factor levels
+
+```{r}
+gl(4, 3)
+gl(4, 3, 24)
+gloss <- gl(2, 2, 24, labels = c("Low", "High"))
+give <- gl(3, 8, 24, labels = c("Hard", "Medium", "Soft"))
+flammable <- gl(2, 4, 24, labels = c("N", "Y"))
+brand <- gl(2, 1, 24, labels = c("X", "M"))
+
+data.frame(gloss, give, flammable, brand)
+```
+
+# Class membership
+
+```{r}
+lv <- c(T, F, T)
+is.logical(lv)
+(fv <- as.factor(lv))
+is.factor(fv)
+(nv <- as.numeric(lv))
+```
+
+![](images/paste-1.png)
+
+
+
+```{r}
+geometric <- function(x) {
+  try(
+    if (!is.numeric(x)) {
+      stop("Input must be numeric")
+    }
+  )
+
+  try(
+    if (min(x) <= 0) {
+      stop("Input must be greater than zero")
+    }
+  )
+  exp(mean(log(x)))
+}
+
+
+geometric(c(2, 3, 0, 4))
+```
+
+# Missing values, infinity, and things that are not numbers
+
+
+```{r}
+3 / 0
+-12 / 0
+exp(-Inf)
+0 / Inf
+
+0 / 0
+Inf - Inf
+Inf / Inf
+
+is.finite(10)
+is.infinite(10)
+is.infinite(Inf)
+is.infinite(-Inf)
+```
+
+
+```{r}
+y1 <- c(1, 2, 3, 6)
+y2 <- c(5, 6, NA, 8)
+y3 <- c(9, 10, 11, 12)
+y4 <- c(NA, 14, 15, 16)
+(full_frame <- data.frame(y1, y2, y3, y4))
+
+(reduced_frame1 <- na.omit(full_frame))
+(reduced_frame1 <- full_frame[!is.na(full_frame$y1), ])
+```
+
+```{r}
+x <- c(1:8, NA)
+mean(x)
+
+mean(x, na.rm = T)
+
+(vmv <- c(1:6, NA, NA, 9:12))
+which(is.na(vmv))
+
+seq(along = vmv)[is.na(vmv)]
+
+vmv[is.na(vmv)] <- 0 # is.na的位置，赋值0
+vmv <- c(1:6, NA, NA, 9:12)
+ifelse(is.na(vmv), 0, vmv)
+```
+
+
+```{r}
+peas <- c(4, 7, 6, 5, 6, 7)
+quantile(peas, 0.5)
+mean(peas)
+median(peas)
+
+```
+
+# vector functions
+```{r}
+y <- c(8, 3, 5, 7, 6, 6, 8, 9, 2, 3, 9, 4, 10, 4, 11)
+max(y)
+min(y)
+sum(y)
+mean(y)
+median(y)
+range(y)
+var(y)
+quantile(y)
+cumsum(y)
+cumprod(y)
+cummax(y)
+cummin(y)
+```
+
+# Obtaining tables using tapply ()
+```{r}
+library(here)
+data <- read.table(here('data/Rbook', 'temp_data.txt'), header = TRUE)
+head(data)
+
+tapply(data$temperature, data$month, mean) # If NA , need to na.rm=T
+tapply(data$temperature, data$month, mean, na.rm = T)
+tapply(data$temperature, data$month, var, na.rm = T)
+tapply(data$temperature, data$month, min, na.rm = T)
+
+tapply(data$temperature, data$month, function(x) {
+  sqrt(var(x, na.rm = T) / length(x))
+})
+``
+`
+# Loops and repeats
+
+
+`
+``
+{
+  r
+}
+for (i in 1:5) {
+  print(i^2)
+}
+```
+
+
+```{r}
+fibonacci <- function(n) {
+  a <- 1
+  b <- 0
+  while (n > 0) {
+    swap <- a
+    a <- a + b
+    b <- swap
+    n <- n - 1
+  }
+  b
+}
+fibonacci(10)
+sapply(1:10, fibonacci)
+
+N <- numeric(20)
+N
+`
+`
+`
+# Pasting character strings together
+
+
+`
+``
+{
+  r
+}
+drive <- "c:"
+folder <- "temp"
+file <- "file"
+extension <- ".txt"
+paste(drive, folder, file, extension)
+paste(drive, "\\", folder, "\\", file, extension, sep = "")
+```
+
+# Dates and times in R
+
+```{r}
+now <- Sys.time()
+now
+as.numeric(now)
+class(now)
+
+time.list <- as.POSIXlt(Sys.time())
+unlist(time.list)
+
+
+```
+
+
+```{r}
+y1 <- "2015-10-22"
+y2 <- "2018-10-22"
+
+y1 <- as.POSIXlt(y1)
+y2 <- as.POSIXlt(y2)
+y1 - y2
+```
+
+
+```{r}
+t1 <- as.difftime("6:14:21")
+t2 <- as.difftime("5:12:32")
+t1 - t2
+```
+
+# chapter 4 
+# Data Input and Dataframes
+
+
+```{r}
+getwd()
+```
+
+
+```{r}
+library(tidyverse)
+library(gcookbook)
+
+# point
+plot(mtcars$wt, mtcars$mpg)
+
+plot(pressure$temperature, pressure$pressure, type = 'l', col = 'red')
+points(pressure$temperature, pressure$pressure, col = 'blue')
+```
+
+```{r}
+ggplot(pressure, aes(x = temperature, y = pressure)) +
+  geom_line(color = 'red') +
+  geom_point(color = 'blue') +
+  theme_minimal()
+```
+
+
+```{r}
+BOD
+barplot(BOD$demand, names.arg = BOD$Time)
+```
+
+
+```{r}
+barplot(table(mtcars$cyl))
+
+glimpse(BOD)
+``
+`
+`
+``
+{
+  r
+}
+library(tidyverse)
+library(ggplot2)
+ggplot(BOD, aes(x = factor(Time), y = demand)) +
+  geom_col()
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+ggplot(BOD, aes(x = as_factor(Time), y = demand)) +
+  geom_col()
+```
+
+```{r}
+ggplot(mtcars, aes(x = cyl)) +
+  geom_bar()
+```
+
+```{r}
+
+ggplot(mtcars, aes(x = factor(cyl), fill = factor(cyl))) +
+  geom_bar()
+```
+
+
+```{r}
+hist(mtcars$mpg)
+hist(mtcars$mpg, breaks = 10)
+```
+
+```{r}
+ggplot(mtcars, aes(x = mpg)) +
+  geom_histogram(binwidth = 4)
+
+
+`
+`
+`
+`
+``
+{
+  r
+}
+glimpse(ToothGrowth)
+plot(ToothGrowth$supp, ToothGrowth$len)
+boxplot(len ~ supp, data = ToothGrowth)
+boxplot(len ~ supp + dose, data = ToothGrowth)
+
+
+```
+
+```{r}
+ggplot(data = ToothGrowth, aes(x = supp, y = len)) +
+  geom_boxplot()
+```
+
+```{r}
+ggplot(data = ToothGrowth, aes(x = interaction(supp, dose), y = len)) +
+  geom_boxplot()
+```
+
+# Plotting a Function Curve
+
+
+```{r}
+curve(x^3 - 5 * x, from = -4, to = 4)
+
+my_func <- function(x) {
+  1 / (1 + exp(-x + 10))
+}
+
+curve(my_func(x), from = 0, to = 20)
+curve(1 - my_func(x), add = T, col = 'red')
+
+ggplot(data.frame(x = c(0, 20)), aes(x = x)) +
+  stat_function(fun = my_func, geom = 'line')
+```
+
+
+```{r}
+fx <- function(x) {
+  1 * x^2 - 20 * x - 19
+}
+curve(fx(x), from = -20, to = 20)
+
+```
+
+
+```{r}
+
+x <- seq(-5, 5, by = 0.1)
+y <- x^2 - 4
+plot(x, y, type = "l", xlab = "x", ylab = "y", main = "y = x^2 - 4")
+abline(v = 0, col = "red", lty = 2)
+abline(h = 0, col = "blue", lty = 2)
+# 找到y = 0时的x值
+x_at_y0 <- x[which(y == 0)]
+points(x_at_y0, rep(0, length(x_at_y0)), pch = 19, col = "green")
+for (i in 1:length(x_at_y0)) {
+  text(
+    x_at_y0[i],
+    0,
+    labels = paste0("x = ", x_at_y0[i]),
+    pos = 3,
+    col = "green"
+  )
+}
+
+```
+
+
+```{r}
+library(ggplot2)
+data <- data.frame(x = seq(-5, 5, by = 0.1))
+data$y <- data$x^2 - 4
+# 找到y = 0时的x值
+x_at_y0 <- data$x[data$y == 0]
+ggplot(data, aes(x = x, y = y)) +
+  geom_line() +
+  xlab("x") +
+  ylab("y") +
+  ggtitle("y = x^2 - 4") +
+  geom_vline(xintercept = 0, color = "red", linetype = "dashed") +
+  geom_hline(yintercept = 0, color = "blue", linetype = "dashed") +
+  geom_point(data = data[data$y == 0, ], aes(x = x, y = y), color = "green") +
+  geom_text(
+    data = data[data$y == 0, ],
+    aes(x = x, y = y, label = paste0("x = ", x)),
+    vjust = -1,
+    color = "green"
+  ) +
+  theme_minimal()
+```
