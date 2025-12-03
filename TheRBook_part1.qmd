@@ -1,12 +1,20 @@
 ---
-title: "The R book （3rd）"
+title: "The R book(Part I)（3rd）"
 format: html
 ---
+
+## 环境准备（必看）
+
+1.  下载项目文件夹，用 R/RStudio 打开项目根目录（确保包含 `renv.lock` 文件）；
+2.  在 R 控制台运行以下代码，一键还原环境： 安装 renv（若未安装） `if (!require(renv)) install.packages("renv", repos = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/")` \# 还原环境（自动安装 renv.lock 中记录的所有包及版本） `renv::restore()`
+
+------------------------------------------------------------------------
 
 # 学习
 
 ```{r}
 library(scales)
+
 ```
 
 ```{r}
@@ -233,8 +241,6 @@ is.factor(fv)
 
 ![](images/paste-1.png)
 
-
-
 ```{r}
 geometric <- function(x) {
   try(
@@ -257,7 +263,6 @@ geometric(c(2, 3, 0, 4))
 
 # Missing values, infinity, and things that are not numbers
 
-
 ```{r}
 3 / 0
 -12 / 0
@@ -273,7 +278,6 @@ is.infinite(10)
 is.infinite(Inf)
 is.infinite(-Inf)
 ```
-
 
 ```{r}
 y1 <- c(1, 2, 3, 6)
@@ -302,7 +306,6 @@ vmv <- c(1:6, NA, NA, 9:12)
 ifelse(is.na(vmv), 0, vmv)
 ```
 
-
 ```{r}
 peas <- c(4, 7, 6, 5, 6, 7)
 quantile(peas, 0.5)
@@ -312,6 +315,7 @@ median(peas)
 ```
 
 # vector functions
+
 ```{r}
 y <- c(8, 3, 5, 7, 6, 6, 8, 9, 2, 3, 9, 4, 10, 4, 11)
 max(y)
@@ -329,6 +333,7 @@ cummin(y)
 ```
 
 # Obtaining tables using tapply ()
+
 ```{r}
 library(here)
 data <- read.table(here('data/Rbook', 'temp_data.txt'), header = TRUE)
@@ -342,21 +347,9 @@ tapply(data$temperature, data$month, min, na.rm = T)
 tapply(data$temperature, data$month, function(x) {
   sqrt(var(x, na.rm = T) / length(x))
 })
-``
-`
-# Loops and repeats
-
-
-`
-``
-{
-  r
-}
-for (i in 1:5) {
-  print(i^2)
-}
 ```
 
+# Loops and repeats
 
 ```{r}
 fibonacci <- function(n) {
@@ -375,17 +368,12 @@ sapply(1:10, fibonacci)
 
 N <- numeric(20)
 N
-`
-`
-`
+
+```
+
 # Pasting character strings together
 
-
-`
-``
-{
-  r
-}
+```{r}
 drive <- "c:"
 folder <- "temp"
 file <- "file"
@@ -408,7 +396,6 @@ unlist(time.list)
 
 ```
 
-
 ```{r}
 y1 <- "2015-10-22"
 y2 <- "2018-10-22"
@@ -418,21 +405,19 @@ y2 <- as.POSIXlt(y2)
 y1 - y2
 ```
 
-
 ```{r}
 t1 <- as.difftime("6:14:21")
 t2 <- as.difftime("5:12:32")
 t1 - t2
 ```
 
-# chapter 4 
-# Data Input and Dataframes
+# chapter 4
 
+# Data Input and Dataframes
 
 ```{r}
 getwd()
 ```
-
 
 ```{r}
 library(tidyverse)
@@ -452,24 +437,18 @@ ggplot(pressure, aes(x = temperature, y = pressure)) +
   theme_minimal()
 ```
 
-
 ```{r}
 BOD
 barplot(BOD$demand, names.arg = BOD$Time)
 ```
 
-
 ```{r}
 barplot(table(mtcars$cyl))
 
 glimpse(BOD)
-``
-`
-`
-``
-{
-  r
-}
+```
+
+```{r}
 library(tidyverse)
 library(ggplot2)
 ggplot(BOD, aes(x = factor(Time), y = demand)) +
@@ -489,11 +468,9 @@ ggplot(mtcars, aes(x = cyl)) +
 ```
 
 ```{r}
-
 ggplot(mtcars, aes(x = factor(cyl), fill = factor(cyl))) +
   geom_bar()
 ```
-
 
 ```{r}
 hist(mtcars$mpg)
@@ -503,16 +480,9 @@ hist(mtcars$mpg, breaks = 10)
 ```{r}
 ggplot(mtcars, aes(x = mpg)) +
   geom_histogram(binwidth = 4)
+```
 
-
-`
-`
-`
-`
-``
-{
-  r
-}
+```{r}
 glimpse(ToothGrowth)
 plot(ToothGrowth$supp, ToothGrowth$len)
 boxplot(len ~ supp, data = ToothGrowth)
@@ -533,7 +503,6 @@ ggplot(data = ToothGrowth, aes(x = interaction(supp, dose), y = len)) +
 
 # Plotting a Function Curve
 
-
 ```{r}
 curve(x^3 - 5 * x, from = -4, to = 4)
 
@@ -548,7 +517,6 @@ ggplot(data.frame(x = c(0, 20)), aes(x = x)) +
   stat_function(fun = my_func, geom = 'line')
 ```
 
-
 ```{r}
 fx <- function(x) {
   1 * x^2 - 20 * x - 19
@@ -556,7 +524,6 @@ fx <- function(x) {
 curve(fx(x), from = -20, to = 20)
 
 ```
-
 
 ```{r}
 
@@ -580,7 +547,6 @@ for (i in 1:length(x_at_y0)) {
 
 ```
 
-
 ```{r}
 library(ggplot2)
 data <- data.frame(x = seq(-5, 5, by = 0.1))
@@ -602,4 +568,125 @@ ggplot(data, aes(x = x, y = y)) +
     color = "green"
   ) +
   theme_minimal()
+```
+
+# Making a Basic Bar Graph
+
+```{r}
+library(gcookbook)
+library(ggplot2)
+ggplot(data = pg_mean, aes(x = group, y = weight)) +
+  geom_col()
+```
+
+```{r}
+BOD
+str(BOD)
+ggplot(BOD, aes(x = Time, y = demand)) +
+  geom_col()
+# covert Time to a discrete(categorical variable with factor(),or as.factor()
+ggplot(BOD, aes(x = as.factor(Time), y = demand)) +
+  geom_col()
+
+```
+
+```{r}
+ggplot(pg_mean, aes(x = group, y = weight)) +
+  geom_col(fill = 'lightblue', colour = 'black')
+```
+
+## 去掉一个数据后，bar图会变宽。需要将对应的数据变为NA
+
+```{r}
+library(tidyverse)
+library(gcookbook)
+glimpse(cabbage_exp)
+ce <- cabbage_exp[1:5, ]
+ce
+ggplot(ce, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col(position = 'dodge', colour = 'black') +
+  scale_fill_brewer(palette = 'Pastel1') +
+  theme_minimal()
+```
+
+### 使用bind_rows()来增加和新行数据比较灵活，为指定数据为NA
+
+```{r}
+ce_complete <- bind_rows(
+  ce,
+  tibble(
+    Cultivar = "c52",
+    Date = "d21"
+  )
+)
+ce_complete
+```
+
+## 图形的d21位置，c52颜色的bar为空。
+
+```{r}
+ggplot(ce_complete, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col(position = 'dodge', colour = 'black') +
+  scale_fill_brewer(palette = 'Pastel1') +
+  theme_minimal()
+
+```
+
+## Making a Bar Graph of Counts
+
+```{r}
+library(tidyverse)
+ggplot(data = diamonds, aes(x = cut)) +
+  geom_bar()
+```
+
+```{r}
+library(tidyverse)
+ggplot(data = diamonds, aes(x = carat)) +
+  geom_histogram(bins = 30)
+```
+
+## Using colors in a Bar graph
+
+```{r}
+library(gcookbook)
+library(dplyr)
+
+upc <- uspopchange |>
+  arrange(desc(Change)) |>
+  slice(1:10)
+upc
+```
+
+## upc data x轴排序，需要按照y来调整，使用reorder
+
+```{r}
+library(tidyverse)
+ggplot(upc, aes(x = Abb, y = Change, fill = Region)) +
+  geom_col()
+```
+
+```{r}
+library(tidyverse)
+ggplot(upc, aes(x = reorder(Abb, Change), y = Change, fill = Region)) +
+  geom_col(colour = 'black') +
+  scale_fill_manual(values = c('#669933', '#FFCC66')) +
+  xlab('State') +
+  theme_minimal()
+```
+
+## 正负数不同颜色显示
+
+```{r}
+library(gcookbook)
+library(dplyr)
+climate_sub <- climate |>
+  filter(Source == 'Berkeley' & Year >= 1900) |>
+  mutate(pos = Anomaly10y > 0)
+```
+
+```{r}
+library(ggplot2)
+ggplot(climate_sub, aes(x = Year, y = Anomaly10y, fill = pos)) +
+  geom_col(position = 'identity')
 ```

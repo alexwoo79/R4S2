@@ -1,0 +1,259 @@
+---
+title: "The R book(Part II)（3rd）"
+format: html
+---
+
+# 正负值不同颜色的设置，新建pos列
+```{r}
+library(ggplot2)
+library(gcookbook)
+library(dplyr)
+climate_sub <- climate |>
+  filter(Source == 'Berkeley' & Year >= 1900) |>
+  mutate(pos = Anomaly10y >= 0)
+ggplot(climate_sub, aes(x = Year, y = Anomaly10y, fill = pos)) +
+  geom_col(position = 'identity', show.legend = F) +
+  theme_bw()
+
+```
+
+# 调整bar的宽度和间距
+
+
+```{r}
+library(gcookbook)
+library(patchwork)
+p1 <- ggplot(pg_mean, aes(x = group, y = weight)) +
+  geom_col()
+
+p2 <- ggplot(pg_mean, aes(x = group, y = weight)) +
+  geom_col(width = 0.5)
+
+p3 <- ggplot(pg_mean, aes(x = group, y = weight)) +
+  geom_col(width = 1)
+
+p1 + p2 + p3
+```
+
+
+```{r}
+library(gcookbook)
+library(patchwork)
+p1 <- ggplot(cabbage_exp, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col(width = 0.5, position = 'dodge')
+
+p2 <- ggplot(cabbage_exp, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col(width = 0.5, position = position_dodge(0.7))
+p1 + p2
+```
+
+
+```{r}
+library(gcookbook)
+library(patchwork)
+p1 <- ggplot(cabbage_exp, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col(width = 0.9, position = 'dodge')
+
+p2 <- ggplot(cabbage_exp, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col(width = 0.9, position = position_dodge(0.9))
+p1 + p2
+```
+
+# stacked bar graph
+
+
+```{r}
+library(gcookbook)
+library(patchwork)
+p1 <- ggplot(cabbage_exp, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col(position = position_stack(reverse = T))
+
+p2 <- ggplot(cabbage_exp, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col(position = position_stack(reverse = F)) +
+  guides(fill = guide_legend(reverse = T))
+
+
+p3 <- ggplot(cabbage_exp, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col(colour = 'black') +
+  scale_fill_brewer(palette = 'Pastel1')
+(p1 + p2) / p3
+```
+
+# 比例柱状图
+
+```{r}
+p1 <- ggplot(cabbage_exp, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col(position = 'fill') +
+  scale_y_continuous(labels = scales::percent)
+
+p2 <- ggplot(cabbage_exp, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col(position = 'fill', colour = 'black') +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_brewer(palette = 'Pastel1')
+
+p1 + p2
+```
+
+# 标记（数值）
+
+```{r}
+library(gcookbook)
+p1 <- ggplot(cabbage_exp, aes(x = interaction(Date, Cultivar), y = Weight)) +
+  geom_col() +
+  geom_text(aes(label = Weight), vjust = 1.5, colour = 'white')
+
+p2 <- ggplot(cabbage_exp, aes(x = interaction(Date, Cultivar), y = Weight)) +
+  geom_col() +
+  geom_text(aes(label = Weight), vjust = -0.2)
+
+p1 + p2
+```
+
+# 标记counts ..count..
+
+
+```{r}
+ggplot(mtcars, aes(x = factor(cyl))) +
+  geom_bar() +
+  geom_text(
+    aes(label = ..count..),
+    stat = 'count',
+    vjust = 1.5,
+    colour = 'white'
+  )
+```
+
+# grouped bar graphs 
+
+
+```{r}
+ggplot(cabbage_exp, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col(position = 'dodge') +
+  geom_text(
+    aes(label = Weight),
+    color = 'white',
+    size = 3,
+    vjust = 1.5,
+    position = position_dodge(0.9)
+  )
+```
+
+# 计算累计的数据stacked
+
+
+```{r}
+library(dplyr)
+ce <- cabbage_exp |>
+  arrange(Date, rev(Cultivar))
+ce <- ce |>
+  group_by(Date) |>
+  mutate(label_y = cumsum(Weight))
+ce
+
+ggplot(ce, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col() +
+  geom_text(aes(y = label_y, label = Weight), vjust = 1.5, colour = 'white')
+```
+
+# 将数值现在中部
+
+
+```{r}
+ce <- cabbage_exp |>
+  arrange(Date, rev(Cultivar))
+ce <- ce |>
+  group_by(Date) |>
+  mutate(label_y = cumsum(Weight) - 0.5 * Weight) # label_y 是y轴上的坐标
+ce
+ggplot(ce, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col() +
+  geom_text(aes(y = label_y, label = Weight), vjust = 1.5, colour = 'white')
+```
+
+
+```{r}
+ce <- cabbage_exp |>
+  arrange(Date, rev(Cultivar))
+ce <- ce |>
+  group_by(Date) |>
+  mutate(label_y = cumsum(Weight) - 0.5 * Weight) # label_y 是y轴上的坐标
+ce
+ggplot(ce, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col(colour = 'black') +
+  geom_text(
+    aes(y = label_y, label = paste(format(Weight, nsmall = 2), 'kg')),
+    vjust = 1.5
+  ) +
+  scale_fill_brewer(palette = "Pastel1")
+```
+
+# Cleveland Dot plot
+
+```{r}
+library(gcookbook)
+tophit <- tophitters2001[1:25, c('name', 'lg', 'avg')]
+tophit
+ggplot(tophit, aes(x = avg, y = name)) +
+  geom_point()
+```
+
+
+```{r}
+ggplot(tophit, aes(x = avg, y = reorder(name, avg))) +
+  geom_point(size = 3) +
+  theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(colour = 'grey60', linetype = 'dashed')
+  )
+```
+
+```{r}
+ggplot(tophit, aes(y = avg, x = reorder(name, avg))) +
+  geom_point(size = 3) +
+  theme_bw() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.x = element_line(colour = 'grey60', linetype = 'dashed'),
+    axis.text.x = element_text(angle = 60, hjust = 1)
+  )
+```
+
+```{r}
+library(gcookbook)
+library(ggplot2)
+library(patchwork)
+# get the names,sorted first by lg,then by avg
+name_ordered <- tophit$name[order(tophit$lg, tophit$avg)]
+# trun name into a factor,with levels in the order of nameorder
+tophit$name <- factor(tophit$name, levels = name_ordered)
+
+name_ordered
+tophit$name
+
+p1 <- ggplot(tophit, aes(x = avg, y = name)) +
+  geom_segment(aes(yend = name), xend = 0, colour = 'gray50') +
+  geom_point(size = 3, aes(colour = lg)) +
+  scale_colour_brewer(palette = 'Set1', limits = c('NL', 'AL')) +
+  theme_bw() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    legend.position = c(1, 0.55),
+    legend.justification = c(1, 0.5)
+  )
+
+p2 <- ggplot(tophit, aes(x = avg, y = name)) +
+  geom_segment(aes(yend = name), xend = 0, colour = 'gray50') +
+  geom_point(size = 3, aes(colour = lg)) +
+  scale_colour_brewer(palette = 'Set1', limits = c('NL', 'AL'), guide = F) +
+  theme_bw() +
+  theme(
+    panel.grid.major.y = element_blank()
+  ) +
+  facet_grid(lg ~ ., scales = 'free_y', space = 'free_y')
+
+
+p2
+```
