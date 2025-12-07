@@ -1,0 +1,23 @@
+// Settings imported from Visual Studio Code
+{
+	"files.associations": {
+		"renv.lock": "json"
+	},
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "never"
+	},
+	"[dynamic csv]": {
+		"editor.inlayHints.maximumLength": 0
+	},
+	"positron.assistant.enable": true,
+	"git.enableSmartCommit": true,
+	"liveServer.settings.donotShowInfoMsg": true,
+	"[r]": {
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "Posit.air-vscode"
+	},
+	"[quarto]": {
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "quarto.quarto"
+	}
+}

@@ -1,4 +1,22 @@
-.Rproj.user
+
+# R 通用忽略规则
+.Rproj.user/
 .Rhistory
 .RData
 .Ruserdata
+*.Rproj
+*.rds
+*.rda
+*.csv~
+*.xlsx~
+.DS_Store  # Mac系统临时文件
+Thumbs.db  # Windows系统临时文件
+
+# renv 专用忽略规则（核心！只保留关键文件）
+renv/cache/  # 包缓存，无需提交
+renv/local/
+renv/staging/
+renv/logs/
+!renv/activate.R  # 必须保留，自动激活环境
+!renv/settings.dcf  # 环境配置，保留
+!renv.lock  # 依赖版本记录，核心保留

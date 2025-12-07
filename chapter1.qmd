@@ -198,3 +198,214 @@ mpg |>
   ))
 
 ```
+
+
+```{r}
+library(tidyverse)
+ggplot(data = starwars, mapping = aes(x = gender)) +
+  geom_bar()
+```
+
+
+```{r}
+starwars |>
+  drop_na(height) |>
+  ggplot(aes(height)) +
+  geom_histogram()
+```
+
+
+```{r}
+starwars |>
+  drop_na(height) |>
+  ggplot(aes(height)) +
+  geom_boxplot(fill = 'steelblue') +
+  theme_bw()
+```
+
+
+```{r}
+#| label: hist-density-sex
+#| fig-cap: "按性别叠加的直方图与密度曲线"
+library(tidyverse)
+library(plotly)
+library(showtext)
+showtext::showtext.auto()
+
+df <- starwars |>
+  drop_na(height) |>
+  filter(sex %in% c("male", "female"))
+
+p1 <- ggplot(df, aes(x = height, color = sex)) +
+  geom_histogram(
+    aes(y = after_stat(density), fill = sex),
+    bins = 30,
+    position = "identity",
+    alpha = 0.4,
+    color = NA
+  ) +
+  geom_density(linewidth = 1, alpha = 0.9, ) +
+  facet_wrap(~sex) +
+  labs(title = "直方图 + 密度曲线", x = "身高", y = "密度") +
+  theme_minimal()
+
+ggplotly(p1)
+```
+
+# data Analysis 
+```{r}
+library(tidyverse)
+library(gapminder)
+
+test <- gapminder |>
+  mutate(year = as_factor(year)) |>
+  filter(continent %in% c('Africa', 'Asia')) |>
+  select(continent, year, lifeExp)
+test
+```
+
+```{r}
+library(gapminder)
+library(dplyr)
+
+# 筛选2007年三大洲数据，查看前5行
+P1 <- gapminder %>%
+  filter(continent %in% c("Africa", "Europe", "Asia"), year == 2007) %>%
+  select(continent, lifeExp) %>%
+  ggplot() +
+  geom_density(
+    mapping = aes(x = lifeExp, fill = continent, color = continent),
+    alpha = 0.3,
+  )
+P1
+
+```
+
+
+```{r}
+library(gapminder)
+library(dplyr)
+
+gapminder %>%
+  filter(
+    continent %in% c("Europe", "Asia"), # 仅保留两组
+    year == 2007
+  ) %>%
+  t.test(lifeExp ~ continent, data = .) # 用 . 正确传递管道数据
+```
+
+
+
+```{r}
+library(plotly)
+library(tidyverse)
+library(forcats)
+view(msleep)
+# Group the data by 'order' and calculate the mean sleep time for each group.
+# Then, reorder the 'order' factor based on the mean sleep time for better visualization.
+p1 <- msleep %>%
+  group_by(order) %>%
+  summarise(mean_sleep = mean(sleep_total)) %>%
+  mutate(order = fct_reorder(order, mean_sleep)) %>%
+  # Create the base ggplot with 'order' on x-axis and 'mean_sleep' on y-axis.
+  ggplot(aes(x = order, y = mean_sleep)) +
+  # Add labels for the plot title and y-axis, leave x-axis label empty.
+  labs(title = "Sleep time of mammals", x = "", y = "Hours") +
+  theme(
+    axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
+    axis.text.y = element_text(face = "bold"),
+    plot.title = element_text(hjust = 0.5, size = 25, face = "bold")
+  ) +
+  # Set canvas and label colors
+  theme(
+    axis.text.x = element_text(color = "lightblue"),
+    axis.text.y = element_text(color = "lightblue"),
+    axis.title.y = element_text(color = "lightblue"),
+    plot.title = element_text(color = "lightblue"),
+    axis.line = element_line(color = "lightblue"),
+    axis.ticks = element_line(color = "lightblue"),
+    panel.background = element_rect(fill = "darkblue"),
+    plot.background = element_rect(fill = "darkblue"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.position = "none"
+  ) +
+  # Add a horizontal line for overall average sleep time.
+  geom_hline(
+    yintercept = mean(msleep$sleep_total),
+    color = "lightblue",
+    size = 1
+  ) +
+  # Add segments from the overall average to each group's mean.
+  geom_segment(
+    aes(
+      x = order,
+      y = mean(msleep$sleep_total),
+      xend = order,
+      yend = mean_sleep
+    ),
+    color = "lightblue"
+  ) +
+  # Add points for each group's mean sleep time, colored with a gradient.
+  geom_point(aes(color = mean_sleep), size = 5) +
+  scale_color_gradient(low = "hotpink", high = "yellow") +
+  # Add an annotation text in the top left quadrant.
+  # Add an annotation text in the top left quadrant.
+  annotate(
+    "text",
+    x = 4,
+    y = max(msleep$sleep_total) - 4,
+    label = "Average sleep\nfor all mammals",
+    color = "#f4cccc",
+    size = 4,
+    fontface = "bold",
+    hjust = 0
+  ) +
+  # Add a curved arrow pointing to the horizontal line.
+  geom_curve(
+    aes(
+      x = 3.7,
+      y = max(msleep$sleep_total) - 5,
+      xend = 1.5,
+      yend = mean(msleep$sleep_total)
+    ),
+    color = "#f4cccc",
+    curvature = 0.5,
+    size = 0.5,
+    arrow = arrow(length = unit(0.07, "npc"), type = "open")
+  )
+
+ggplotly(p1)
+```
+
+
+```{r}
+library(gtExtras)
+library(gapminder)
+library(RColorBrewer)
+library(svglite)
+
+gapminder %>%
+  rename(Country = country) %>%
+  filter(continent == "Europe") %>%
+  group_by(Country) %>%
+  summarise(
+    `GDP per capita` = round(mean(gdpPercap)),
+    `Pop size` = round(mean(pop)),
+    `Life expectance` = list(lifeExp)
+  ) %>%
+  arrange(-`GDP per capita`) %>%
+  head(10) %>%
+  gt() %>%
+  gt_theme_pff() %>%
+  gt_plt_dist('Life expectance') %>%
+  gt_color_rows(column = 'Pop size', palette = "Pastel1") %>%
+  gt_plt_bar_pct(
+    'GDP per capita',
+    fill = "steelblue",
+    height = 15,
+    width = 120
+  ) %>%
+  tab_header(title = "The GDP and Pop Size of Europe") %>%
+  cols_align(align = "left")
+```
