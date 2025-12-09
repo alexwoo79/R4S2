@@ -59,3 +59,64 @@ hurricane_subset <- hurricane_subset[
 ]
 # View the resulting hurricane_subset dataset
 glimpse(hurricane_subset)
+
+
+# Tally votes for favorite shows
+library(tidyverse)
+shows <- read.csv("shows.csv")
+
+shows |>
+  group_by(show) |>
+  summarize(votes = n()) |>
+  ungroup() |>
+  arrange(desc(votes))
+
+shows$show <- shows$show |>
+  str_trim() |>
+  str_to_title() |>
+  str_squish() # Standardize formatting trim whitespace and capitalization
+shows$show[str_detect(shows$show, 'Avatar')] <- 'Avatar: The Last Airbender'
+
+shows |>
+  group_by(show) |>
+  summarise(votes = n()) |>
+  ungroup() |>
+  arrange(desc(votes))
+
+
+shows |>
+  group_by(show) |>
+  summarise(votes = n()) |>
+  ungroup() |>
+  arrange(desc(votes))
+
+
+# Tidying data with tidyr
+library(tidyverse)
+students <- read.csv("students.csv")
+glimpse(students)
+
+
+#longer format to wider format
+students_wide <- students |>
+  pivot_wider(
+    id_cols = student,
+    names_from = attribute,
+    values_from = value
+  ) |>
+  mutate(
+    GPA = as.numeric(GPA)
+  )
+glimpse(students_wide)
+
+
+# grouped summary statistics
+students_wide |>
+  group_by(major) |>
+  summarise(
+    avg_GPA = mean(GPA, na.rm = TRUE),
+    max_GPA = max(GPA, na.rm = TRUE),
+    min_GPA = min(GPA, na.rm = TRUE),
+    count = n()
+  ) |>
+  arrange(desc(avg_GPA))
