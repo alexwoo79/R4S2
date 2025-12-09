@@ -27,3 +27,7 @@ renv::snapshot()
 ```
 
 ## 二、日常开发（维护者/已初始化环境）
+
+1. 共享项目资源：将整个项目文件夹复制给合作者，包括生成的`renv.lock`文件，以及`.Rprofile`和`renv/activate.R`。`renv.lock`记录了项目所需包的版本等关键信息，`.Rprofile`和`renv/activate.R`用于自动加载`renv`。
+
+2. 更新锁文件（如有必要）：在项目进行过程中，若有人安装或更新了包，需运行`renv::snapshot()`更新`renv.lock`文件，然后将更新后的renv.lock文件再次共享给其他合作者，其他合作者重新运行`renv::restore()`即可同步新的包环境。
