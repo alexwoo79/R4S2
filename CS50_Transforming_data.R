@@ -86,6 +86,7 @@ which(!is.na(chicks$weight))
 
 chicks_narm <- chicks[!is.na(chicks$weight), ]
 
+# subset 提取数据子集
 chicks_narm <- subset(chicks, !is.na(weight))
 
 soybean_chicks <- subset(chicks, feed == 'soybean')
@@ -139,6 +140,27 @@ Q3 <- read.csv(here('Q3.csv'))
 Q3$quarter <- 'Q3'
 Q4 <- read.csv(here('Q4.csv'))
 Q4$quarter <- 'Q4'
+
+# function to get filename without extension
+path <- here::here('Q4.csv')
+get_name <- function(path) {
+  filename <- stringr::str_split(basename(path), '.csv')[[1]][1]
+  return(filename)
+}
+get_name(path)
+
+# use fs() package to list files in directory
+library(fs)
+file_list <- dir_ls(here(), regexp = 'Q[1-4]\\.csv$')
+file_list
+# get filename without extension for each file
+
+# 得到的列表是一个named vector， 但是名字是文件的完整路径
+file_names <- sapply(file_list, FUN = get_name)
+names(file_names)
+# set names to 1 to 4
+setNames(file_names, nm = 1:4)
+
 
 # combine datasets using rbind
 sales <- rbind(Q1, Q2, Q3, Q4)
