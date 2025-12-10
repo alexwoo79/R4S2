@@ -1,0 +1,14 @@
+Package: ducksay
+Title: Quack like a duck in your R console
+Description: 
+    This package provides a simple function to display a duck saying a custom message in the R console.
+Version: 0.1.0
+Authors@R: person("Alex", "Woo",
+    email = "4886957@qq.com",
+    role =c("aut", "cre","cph")
+    )
+License: MIT + file LICENSE
+Encoding: UTF-8
+Suggests: 
+    testthat(>= 3.0.0)
+Config/testthat/edition: 3
