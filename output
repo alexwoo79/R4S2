@@ -1,0 +1,700 @@
+
+Arthrt> data("Arthritis")
+
+Arthrt> art <- xtabs(~ Treatment + Improved, data = Arthritis, subset = Sex == "Female")
+
+Arthrt> art
+         Improved
+Treatment None Some Marked
+  Placebo   19    7      6
+  Treated    6    5     16
+
+Arthrt> mosaic(art, gp = shading_Friendly)
+
+Arthrt> mosaic(art, gp = shading_max)
+   ID Treatment    Sex Age Improved
+1  57   Treated   Male  27     Some
+2  46   Treated   Male  29     None
+3  77   Treated   Male  30     None
+4  17   Treated   Male  32   Marked
+5  36   Treated   Male  46   Marked
+6  23   Treated   Male  58   Marked
+7  75   Treated   Male  59     None
+8  39   Treated   Male  59   Marked
+9  33   Treated   Male  63     None
+10 55   Treated   Male  63     None
+11 30   Treated   Male  64     None
+12  5   Treated   Male  64     Some
+13 63   Treated   Male  69     None
+14 83   Treated   Male  70   Marked
+15 66   Treated Female  23     None
+16 40   Treated Female  32     None
+17  6   Treated Female  37     Some
+18  7   Treated Female  41     None
+19 72   Treated Female  41   Marked
+20 37   Treated Female  48     None
+21 82   Treated Female  48   Marked
+22 53   Treated Female  55   Marked
+23 79   Treated Female  55   Marked
+24 26   Treated Female  56   Marked
+25 28   Treated Female  57   Marked
+26 60   Treated Female  57   Marked
+27 22   Treated Female  57   Marked
+28 27   Treated Female  58     None
+29  2   Treated Female  59   Marked
+30 59   Treated Female  59   Marked
+31 62   Treated Female  60   Marked
+32 84   Treated Female  61   Marked
+33 64   Treated Female  62     Some
+34 34   Treated Female  62   Marked
+35 58   Treated Female  66   Marked
+36 13   Treated Female  67   Marked
+37 61   Treated Female  68     Some
+38 65   Treated Female  68   Marked
+39 11   Treated Female  69     None
+40 56   Treated Female  69     Some
+41 43   Treated Female  70     Some
+42  9   Placebo   Male  37     None
+43 14   Placebo   Male  44     None
+44 73   Placebo   Male  50     None
+45 74   Placebo   Male  51     None
+46 25   Placebo   Male  52     None
+47 18   Placebo   Male  53     None
+48 21   Placebo   Male  59     None
+49 52   Placebo   Male  59     None
+50 45   Placebo   Male  62     None
+51 41   Placebo   Male  62     None
+52  8   Placebo   Male  63   Marked
+53 80   Placebo Female  23     None
+54 12   Placebo Female  30     None
+55 29   Placebo Female  30     None
+56 50   Placebo Female  31     Some
+57 38   Placebo Female  32     None
+58 35   Placebo Female  33   Marked
+59 51   Placebo Female  37     None
+60 54   Placebo Female  44     None
+61 76   Placebo Female  45     None
+62 16   Placebo Female  46     None
+63 69   Placebo Female  48     None
+64 31   Placebo Female  49     None
+65 20   Placebo Female  51     None
+66 68   Placebo Female  53     None
+67 81   Placebo Female  54     None
+68  4   Placebo Female  54     None
+69 78   Placebo Female  54   Marked
+70 70   Placebo Female  55   Marked
+71 49   Placebo Female  57     None
+72 10   Placebo Female  57     Some
+73 47   Placebo Female  58     Some
+74 44   Placebo Female  59     Some
+75 24   Placebo Female  59   Marked
+76 48   Placebo Female  61     None
+77 19   Placebo Female  63     Some
+78  3   Placebo Female  64     None
+79 67   Placebo Female  65   Marked
+80 32   Placebo Female  66     None
+81 42   Placebo Female  66     None
+82 15   Placebo Female  66     Some
+83 71   Placebo Female  68     Some
+84  1   Placebo Female  74   Marked
+# Downloading packages -------------------------------------------------------
+- Downloading gclus from CRAN ...               OK [408.2 Kb in 0.31s]
+Successfully downloaded 1 package in 0.42 seconds.
+
+The following package(s) will be installed:
+- gclus [1.3.3]
+These packages will be installed into "~/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20".
+
+
+# Installing packages --------------------------------------------------------
+- Installing gclus ...                          OK [installed binary and cached in 0.14s]
+Successfully installed 1 package in 0.18 seconds.
+- Checking for updated packages ... Done!
+- All packages appear to be up-to-date.
+              Package        
+askpass       "askpass"      
+backports     "backports"    
+base64enc     "base64enc"    
+bit           "bit"          
+bit64         "bit64"        
+blob          "blob"         
+brio          "brio"         
+broom         "broom"        
+bslib         "bslib"        
+cachem        "cachem"       
+callr         "callr"        
+cellranger    "cellranger"   
+cli           "cli"          
+clipr         "clipr"        
+colorspace    "colorspace"   
+conflicted    "conflicted"   
+cpp11         "cpp11"        
+crayon        "crayon"       
+curl          "curl"         
+data.table    "data.table"   
+DBI           "DBI"          
+dbplyr        "dbplyr"       
+desc          "desc"         
+diffobj       "diffobj"      
+digest        "digest"       
+dplyr         "dplyr"        
+dtplyr        "dtplyr"       
+evaluate      "evaluate"     
+farver        "farver"       
+fastmap       "fastmap"      
+fontawesome   "fontawesome"  
+forcats       "forcats"      
+fs            "fs"           
+gargle        "gargle"       
+gclus         "gclus"        
+generics      "generics"     
+ggplot2       "ggplot2"      
+glue          "glue"         
+googledrive   "googledrive"  
+googlesheets4 "googlesheets4"
+gtable        "gtable"       
+haven         "haven"        
+highr         "highr"        
+hms           "hms"          
+htmltools     "htmltools"    
+httr          "httr"         
+ids           "ids"          
+isoband       "isoband"      
+jquerylib     "jquerylib"    
+jsonlite      "jsonlite"     
+knitr         "knitr"        
+labeling      "labeling"     
+lifecycle     "lifecycle"    
+lmtest        "lmtest"       
+lubridate     "lubridate"    
+magrittr      "magrittr"     
+memoise       "memoise"      
+mime          "mime"         
+modelr        "modelr"       
+openssl       "openssl"      
+pillar        "pillar"       
+pkgbuild      "pkgbuild"     
+              LibPath                                                                                               
+askpass       "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+backports     "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+base64enc     "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+bit           "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+bit64         "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+blob          "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+brio          "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+broom         "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+bslib         "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+cachem        "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+callr         "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+cellranger    "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+cli           "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+clipr         "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+colorspace    "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+conflicted    "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+cpp11         "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+crayon        "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+curl          "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+data.table    "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+DBI           "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+dbplyr        "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+desc          "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+diffobj       "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+digest        "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+dplyr         "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+dtplyr        "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+evaluate      "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+farver        "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+fastmap       "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+fontawesome   "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+forcats       "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+fs            "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+gargle        "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+gclus         "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+generics      "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+ggplot2       "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+glue          "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+googledrive   "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+googlesheets4 "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+gtable        "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+haven         "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+highr         "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+hms           "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+htmltools     "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+httr          "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+ids           "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+isoband       "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+jquerylib     "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+jsonlite      "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+knitr         "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+labeling      "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+lifecycle     "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+lmtest        "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+lubridate     "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+magrittr      "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+memoise       "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+mime          "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+modelr        "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+openssl       "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+pillar        "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+pkgbuild      "/Users/alex/Documents/github/R4S2/renv/library/macos/R-4.4/x86_64-apple-darwin20"                    
+              Version    Priority      Depends                                          
+askpass       "1.2.1"    NA            NA                                               
+backports     "1.5.0"    NA            "R (>= 3.0.0)"                                   
+base64enc     "0.1-3"    NA            "R (>= 2.9.0)"                                   
+bit           "4.6.0"    NA            "R (>= 3.4.0)"                                   
+bit64         "4.6.0-1"  NA            "R (>= 3.4.0), bit (>= 4.0.0)"                   
+blob          "1.2.4"    NA            NA                                               
+brio          "1.1.5"    NA            "R (>= 3.6)"                                     
+broom         "1.0.11"   NA            "R (>= 4.1)"                                     
+bslib         "0.9.0"    NA            "R (>= 2.10)"                                    
+cachem        "1.1.0"    NA            NA                                               
+callr         "3.7.6"    NA            "R (>= 3.4)"                                     
+cellranger    "1.1.0"    NA            "R (>= 3.0.0)"                                   
+cli           "3.6.5"    NA            "R (>= 3.4)"                                     
+clipr         "0.8.0"    NA            NA                                               
+colorspace    "2.1-2"    NA            "R (>= 3.0.0), methods"                          
+conflicted    "1.2.0"    NA            "R (>= 3.2)"                                     
+cpp11         "0.5.2"    NA            "R (>= 4.0.0)"                                   
+crayon        "1.5.3"    NA            NA                                               
+curl          "7.0.0"    NA            "R (>= 3.0.0)"                                   
+data.table    "1.17.8"   NA            "R (>= 3.3.0)"                                   
+DBI           "1.2.3"    NA            "methods, R (>= 3.0.0)"                          
+dbplyr        "2.5.1"    NA            "R (>= 3.6)"                                     
+desc          "1.4.3"    NA            "R (>= 3.4)"                                     
+diffobj       "0.3.6"    NA            "R (>= 3.1.0)"                                   
+digest        "0.6.39"   NA            "R (>= 3.3.0)"                                   
+dplyr         "1.1.4"    NA            "R (>= 3.5.0)"                                   
+dtplyr        "1.3.2"    NA            "R (>= 4.0)"                                     
+evaluate      "1.0.5"    NA            "R (>= 3.6.0)"                                   
+farver        "2.1.2"    NA            NA                                               
+fastmap       "1.2.0"    NA            NA                                               
+fontawesome   "0.5.3"    NA            "R (>= 3.3.0)"                                   
+forcats       "1.0.1"    NA            "R (>= 4.1)"                                     
+fs            "1.6.6"    NA            "R (>= 3.6)"                                     
+gargle        "1.6.0"    NA            "R (>= 3.6)"                                     
+gclus         "1.3.3"    NA            "R (>= 2.10), cluster"                           
+generics      "0.1.4"    NA            "R (>= 3.6)"                                     
+ggplot2       "4.0.1"    NA            "R (>= 4.1)"                                     
+glue          "1.8.0"    NA            "R (>= 3.6)"                                     
+googledrive   "2.1.2"    NA            "R (>= 4.1)"                                     
+googlesheets4 "1.1.2"    NA            "R (>= 3.6)"                                     
+gtable        "0.3.6"    NA            "R (>= 4.0)"                                     
+haven         "2.5.5"    NA            "R (>= 3.6)"                                     
+highr         "0.11"     NA            "R (>= 3.3.0)"                                   
+hms           "1.1.4"    NA            NA                                               
+htmltools     "0.5.9"    NA            "R (>= 2.14.1)"                                  
+httr          "1.4.7"    NA            "R (>= 3.5)"                                     
+ids           "1.0.1"    NA            NA                                               
+isoband       "0.3.0"    NA            NA                                               
+jquerylib     "0.1.4"    NA            NA                                               
+jsonlite      "2.0.0"    NA            "methods"                                        
+knitr         "1.50"     NA            "R (>= 3.6.0)"                                   
+labeling      "0.4.3"    NA            NA                                               
+lifecycle     "1.0.4"    NA            "R (>= 3.6)"                                     
+lmtest        "0.9-40"   NA            "R (>= 3.0.0), stats, zoo"                       
+lubridate     "1.9.4"    NA            "methods, R (>= 3.2)"                            
+magrittr      "2.0.4"    NA            "R (>= 3.4.0)"                                   
+memoise       "2.0.1"    NA            NA                                               
+mime          "0.13"     NA            NA                                               
+modelr        "0.1.11"   NA            "R (>= 3.2)"                                     
+openssl       "2.3.4"    NA            NA                                               
+pillar        "1.11.1"   NA            NA                                               
+pkgbuild      "1.4.8"    NA            "R (>= 3.5)"                                     
+              Imports                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+askpass       "sys (>= 2.1)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+backports     NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+base64enc     NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+bit           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+bit64         "graphics, methods, stats, utils"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+blob          "methods, rlang, vctrs (>= 0.2.1)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+brio          NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+broom         "backports, cli, dplyr (>= 1.0.0), generics (>= 0.0.2), glue,\nlifecycle, purrr, rlang (>= 1.1.0), stringr, tibble (>= 3.0.0),\ntidyr (>= 1.0.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+bslib         "base64enc, cachem, fastmap (>= 1.1.1), grDevices, htmltools\n(>= 0.5.8), jquerylib (>= 0.1.3), jsonlite, lifecycle, memoise\n(>= 2.0.1), mime, rlang, sass (>= 0.4.9)"                                                                                                                                                                                                                                                                                                                                                                                                                                      
+cachem        "rlang, fastmap (>= 1.2.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+callr         "processx (>= 3.6.1), R6, utils"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+cellranger    "rematch, tibble"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+cli           "utils"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+clipr         "utils"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+colorspace    "graphics, grDevices, stats"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+conflicted    "cli (>= 3.4.0), memoise, rlang (>= 1.0.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+cpp11         NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+crayon        "grDevices, methods, utils"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+curl          NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+data.table    "methods"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+DBI           NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+dbplyr        "blob (>= 1.2.0), cli (>= 3.6.1), DBI (>= 1.1.3), dplyr (>=\n1.1.2), glue (>= 1.6.2), lifecycle (>= 1.0.3), magrittr,\nmethods, pillar (>= 1.9.0), purrr (>= 1.0.1), R6 (>= 2.2.2),\nrlang (>= 1.1.1), tibble (>= 3.2.1), tidyr (>= 1.3.0),\ntidyselect (>= 1.2.1), utils, vctrs (>= 0.6.3), withr (>=\n2.5.0)"                                                                                                                                                                                                                                                                                              
+desc          "cli, R6, utils"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+diffobj       "crayon (>= 1.3.2), tools, methods, utils, stats"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+digest        "utils"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+dplyr         "cli (>= 3.4.0), generics, glue (>= 1.3.2), lifecycle (>=\n1.0.3), magrittr (>= 1.5), methods, pillar (>= 1.9.0), R6,\nrlang (>= 1.1.0), tibble (>= 3.2.0), tidyselect (>= 1.2.0),\nutils, vctrs (>= 0.6.4)"                                                                                                                                                                                                                                                                                                                                                                                                 
+dtplyr        "cli (>= 3.4.0), data.table (>= 1.13.0), dplyr (>= 1.1.0),\nglue, lifecycle, rlang (>= 1.0.4), tibble, tidyselect (>=\n1.2.0), vctrs (>= 0.4.1)"                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+evaluate      NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+farver        NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+fastmap       NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+fontawesome   "rlang (>= 1.0.6), htmltools (>= 0.5.1.1)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+forcats       "cli (>= 3.4.0), glue, lifecycle, magrittr, rlang (>= 1.0.0),\ntibble"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+fs            "methods"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+gargle        "cli (>= 3.0.1), fs (>= 1.3.1), glue (>= 1.3.0), httr (>=\n1.4.5), jsonlite, lifecycle (>= 0.2.0), openssl, rappdirs,\nrlang (>= 1.1.0), stats, utils, withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                
+gclus         NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+generics      "methods"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+ggplot2       "cli, grDevices, grid, gtable (>= 0.3.6), isoband, lifecycle (>\n1.0.1), rlang (>= 1.1.0), S7, scales (>= 1.4.0), stats, vctrs\n(>= 0.6.0), withr (>= 2.5.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                
+glue          "methods"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+googledrive   "cli (>= 3.0.0), gargle (>= 1.6.0), glue (>= 1.4.2), httr,\njsonlite, lifecycle, magrittr, pillar (>= 1.9.0), purrr (>=\n1.0.1), rlang (>= 1.0.2), tibble (>= 2.0.0), utils, uuid, vctrs\n(>= 0.3.0), withr"                                                                                                                                                                                                                                                                                                                                                                                                 
+googlesheets4 "cellranger, cli (>= 3.0.0), curl, gargle (>= 1.6.0), glue (>=\n1.3.0), googledrive (>= 2.1.0), httr, ids, lifecycle, magrittr,\nmethods, purrr, rematch2, rlang (>= 1.0.2), tibble (>= 2.1.1),\nutils, vctrs (>= 0.2.3), withr"                                                                                                                                                                                                                                                                                                                                                                             
+gtable        "cli, glue, grid, lifecycle, rlang (>= 1.1.0), stats"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+haven         "cli (>= 3.0.0), forcats (>= 0.2.0), hms, lifecycle, methods,\nreadr (>= 0.1.0), rlang (>= 0.4.0), tibble, tidyselect, vctrs\n(>= 0.3.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+highr         "xfun (>= 0.18)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+hms           "cli, lifecycle, methods, pkgconfig, rlang (>= 1.0.2), vctrs\n(>= 0.3.8)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+htmltools     "base64enc, digest, fastmap (>= 1.1.0), grDevices, rlang (>=\n1.0.0), utils"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+httr          "curl (>= 5.0.2), jsonlite, mime, openssl (>= 0.8), R6"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+ids           "openssl, uuid"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+isoband       "cli, grid, rlang, utils"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+jquerylib     "htmltools"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+jsonlite      NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+knitr         "evaluate (>= 0.15), highr (>= 0.11), methods, tools, xfun (>=\n0.51), yaml (>= 2.1.19)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+labeling      "stats, graphics"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+lifecycle     "cli (>= 3.4.0), glue, rlang (>= 1.1.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+lmtest        "graphics"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+lubridate     "generics, timechange (>= 0.3.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+magrittr      NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+memoise       "rlang (>= 0.4.10), cachem"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+mime          "tools"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+modelr        "broom, magrittr, purrr (>= 0.2.2), rlang (>= 1.0.6), tibble,\ntidyr (>= 0.8.0), tidyselect, vctrs"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+openssl       "askpass"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+pillar        "cli (>= 2.3.0), glue, lifecycle, rlang (>= 1.0.2), utf8 (>=\n1.1.0), utils, vctrs (>= 0.5.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+pkgbuild      "callr (>= 3.2.0), cli (>= 3.4.0), desc, processx, R6"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+              LinkingTo                                               
+askpass       NA                                                      
+backports     NA                                                      
+base64enc     NA                                                      
+bit           NA                                                      
+bit64         NA                                                      
+blob          NA                                                      
+brio          NA                                                      
+broom         NA                                                      
+bslib         NA                                                      
+cachem        NA                                                      
+callr         NA                                                      
+cellranger    NA                                                      
+cli           NA                                                      
+clipr         NA                                                      
+colorspace    NA                                                      
+conflicted    NA                                                      
+cpp11         NA                                                      
+crayon        NA                                                      
+curl          NA                                                      
+data.table    NA                                                      
+DBI           NA                                                      
+dbplyr        NA                                                      
+desc          NA                                                      
+diffobj       NA                                                      
+digest        NA                                                      
+dplyr         NA                                                      
+dtplyr        NA                                                      
+evaluate      NA                                                      
+farver        NA                                                      
+fastmap       NA                                                      
+fontawesome   NA                                                      
+forcats       NA                                                      
+fs            NA                                                      
+gargle        NA                                                      
+gclus         NA                                                      
+generics      NA                                                      
+ggplot2       NA                                                      
+glue          NA                                                      
+googledrive   NA                                                      
+googlesheets4 NA                                                      
+gtable        NA                                                      
+haven         "cpp11"                                                 
+highr         NA                                                      
+hms           NA                                                      
+htmltools     NA                                                      
+httr          NA                                                      
+ids           NA                                                      
+isoband       "cpp11"                                                 
+jquerylib     NA                                                      
+jsonlite      NA                                                      
+knitr         NA                                                      
+labeling      NA                                                      
+lifecycle     NA                                                      
+lmtest        NA                                                      
+lubridate     NA                                                      
+magrittr      NA                                                      
+memoise       NA                                                      
+mime          NA                                                      
+modelr        NA                                                      
+openssl       NA                                                      
+pillar        NA                                                      
+pkgbuild      NA                                                      
+              Suggests                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+askpass       "testthat"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+backports     NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+base64enc     NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+bit           "testthat (>= 3.0.0), roxygen2, knitr, markdown, rmarkdown,\nmicrobenchmark, bit64 (>= 4.0.0), ff (>= 4.0.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+bit64         "testthat (>= 3.0.3), withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+blob          "covr, crayon, pillar (>= 1.2.1), testthat"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+brio          "covr, testthat (>= 3.0.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+broom         "AER, AUC, bbmle, betareg (>= 3.2-1), biglm, binGroup, boot,\nbtergm (>= 1.10.6), car (>= 3.1-2), carData, caret, cluster,\ncmprsk, coda, covr, drc, e1071, emmeans, epiR (>= 2.0.85), ergm\n(>= 3.10.4), fixest (>= 0.9.0), gam (>= 1.15), gee, geepack,\nggplot2, glmnet, glmnetUtils, gmm, Hmisc, interp, irlba,\njoineRML, Kendall, knitr, ks, Lahman, lavaan (>= 0.6.18),\nleaps, lfe, lm.beta, lme4, lmodel2, lmtest (>= 0.9.38),\nlsmeans, maps, margins, MASS, mclust, mediation, metafor, mfx,\nmgcv, mlogit, modeldata, modeltests (>= 0.1.6), muhaz,\nmultcomp, network, nnet, ordinal, plm, poLCA, psych, quantreg,\nrmarkdown, robust, robustbase, rsample, sandwich, spatialreg,\nspdep (>= 1.1), speedglm, spelling, stats4, survey, survival\n(>= 3.6-4), systemfit, testthat (>= 3.0.0), tseries, vars, zoo"
+bslib         "bsicons, curl, fontawesome, future, ggplot2, knitr, magrittr,\nrappdirs, rmarkdown (>= 2.7), shiny (> 1.8.1), testthat,\nthematic, tools, utils, withr, yaml"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+cachem        "testthat"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+callr         "asciicast (>= 2.3.1), cli (>= 1.1.0), mockery, ps, rprojroot,\nspelling, testthat (>= 3.2.0), withr (>= 2.3.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+cellranger    "covr, testthat (>= 1.0.0), knitr, rmarkdown"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+cli           "callr, covr, crayon, digest, glue (>= 1.6.0), grDevices,\nhtmltools, htmlwidgets, knitr, methods, processx, ps (>=\n1.3.4.9000), rlang (>= 1.0.2.9003), rmarkdown, rprojroot,\nrstudioapi, testthat (>= 3.2.0), tibble, whoami, withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+clipr         "covr, knitr, rmarkdown, rstudioapi (>= 0.5), testthat (>=\n2.0.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+colorspace    "datasets, utils, KernSmooth, MASS, kernlab, mvtnorm, vcd,\ntcltk, shiny, shinyjs, ggplot2, dplyr, scales, grid, png, jpeg,\nknitr, rmarkdown, RColorBrewer, rcartocolor, scico, viridis,\nwesanderson"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+conflicted    "callr, covr, dplyr, Matrix, methods, pkgload, testthat (>=\n3.0.0), withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+cpp11         "bench, brio, callr, cli, covr, decor, desc, ggplot2, glue,\nknitr, lobstr, mockery, progress, rmarkdown, scales, Rcpp,\ntestthat (>= 3.2.0), tibble, utils, vctrs, withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+crayon        "mockery, rstudioapi, testthat, withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+curl          "spelling, testthat (>= 1.0.0), knitr, jsonlite, later,\nrmarkdown, httpuv (>= 1.4.4), webutils"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+data.table    "bit64 (>= 4.0.0), bit (>= 4.0.4), R.utils, xts, zoo (>=\n1.8-1), yaml, knitr, markdown"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+DBI           "arrow, blob, covr, DBItest, dbplyr, downlit, dplyr, glue,\nhms, knitr, magrittr, nanoarrow (>= 0.3.0.1), RMariaDB,\nrmarkdown, rprojroot, RSQLite (>= 1.1-2), testthat (>= 3.0.0),\nvctrs, xml2"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+dbplyr        "bit64, covr, knitr, Lahman, nycflights13, odbc (>= 1.4.2),\nRMariaDB (>= 1.2.2), rmarkdown, RPostgres (>= 1.4.5),\nRPostgreSQL, RSQLite (>= 2.3.8), testthat (>= 3.1.10)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+desc          "callr, covr, gh, spelling, testthat, whoami, withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+diffobj       "knitr, rmarkdown"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+digest        "tinytest, simplermarkdown, rbenchmark"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+dplyr         "bench, broom, callr, covr, DBI, dbplyr (>= 2.2.1), ggplot2,\nknitr, Lahman, lobstr, microbenchmark, nycflights13, purrr,\nrmarkdown, RMySQL, RPostgreSQL, RSQLite, stringi (>= 1.7.6),\ntestthat (>= 3.1.5), tidyr (>= 1.3.0), withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+dtplyr        "bench, covr, knitr, rmarkdown, testthat (>= 3.1.2), tidyr (>=\n1.1.0), waldo (>= 0.3.1)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+evaluate      "callr, covr, ggplot2 (>= 3.3.6), lattice, methods, pkgload,\nragg (>= 1.4.0), rlang (>= 1.1.5), knitr, testthat (>= 3.0.0),\nwithr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+farver        "covr, testthat (>= 3.0.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+fastmap       "testthat (>= 2.1.1)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+fontawesome   "covr, dplyr (>= 1.0.8), gt (>= 0.9.0), knitr (>= 1.31),\ntestthat (>= 3.0.0), rsvg"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+forcats       "covr, dplyr, ggplot2, knitr, readr, rmarkdown, testthat (>=\n3.0.0), withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+fs            "covr, crayon, knitr, pillar (>= 1.0.0), rmarkdown, spelling,\ntestthat (>= 3.0.0), tibble (>= 1.1.0), vctrs (>= 0.3.0), withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+gargle        "aws.ec2metadata, aws.signature, covr, httpuv, knitr,\nrmarkdown, sodium, spelling, testthat (>= 3.1.7)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+gclus         "knitr, rmarkdown"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+generics      "covr, pkgload, testthat (>= 3.0.0), tibble, withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+ggplot2       "broom, covr, dplyr, ggplot2movies, hexbin, Hmisc, hms, knitr,\nmapproj, maps, MASS, mgcv, multcomp, munsell, nlme, profvis,\nquantreg, quarto, ragg (>= 1.2.6), RColorBrewer, roxygen2,\nrpart, sf (>= 0.7-3), svglite (>= 2.1.2), testthat (>= 3.1.5),\ntibble, vdiffr (>= 1.0.6), xml2"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+glue          "crayon, DBI (>= 1.2.0), dplyr, knitr, magrittr, rlang,\nrmarkdown, RSQLite, testthat (>= 3.2.0), vctrs (>= 0.3.0),\nwaldo (>= 0.5.3), withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+googledrive   "curl, dplyr (>= 1.0.0), knitr, rmarkdown, spelling, testthat\n(>= 3.1.5)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+googlesheets4 "readr, rmarkdown, spelling, testthat (>= 3.1.7)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+gtable        "covr, ggplot2, knitr, profvis, rmarkdown, testthat (>= 3.0.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+haven         "covr, crayon, fs, knitr, pillar (>= 1.4.0), rmarkdown,\ntestthat (>= 3.0.0), utf8"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+highr         "knitr, markdown, testit"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+hms           "crayon, lubridate, pillar (>= 1.1.0), testthat (>= 3.0.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+htmltools     "Cairo, markdown, ragg, shiny, testthat, withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+httr          "covr, httpuv, jpeg, knitr, png, readr, rmarkdown, testthat\n(>= 0.8.0), xml2"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+ids           "knitr, rcorpora, rmarkdown, testthat"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+isoband       "covr, ggplot2, knitr, magick, bench, rmarkdown, sf, testthat\n(>= 3.0.0), xml2"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+jquerylib     "testthat"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+jsonlite      "httr, vctrs, testthat, knitr, rmarkdown, R.rsp, sf"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+knitr         "bslib, codetools, DBI (>= 0.4-1), digest, formatR, gifski,\ngridSVG, htmlwidgets (>= 0.7), jpeg, JuliaCall (>= 0.11.1),\nmagick, litedown, markdown (>= 1.3), png, ragg, reticulate (>=\n1.4), rgl (>= 0.95.1201), rlang, rmarkdown, sass, showtext,\nstyler (>= 1.2.0), targets (>= 0.6.0), testit, tibble,\ntikzDevice (>= 0.10), tinytex (>= 0.56), webshot, rstudioapi,\nsvglite"                                                                                                                                                                                                                                                                                                                                                                                                                                       
+labeling      NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+lifecycle     "covr, crayon, knitr, lintr, rmarkdown, testthat (>= 3.0.1),\ntibble, tidyverse, tools, vctrs, withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+lmtest        "car, strucchange, sandwich, dynlm, stats4, survival, AER"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+lubridate     "covr, knitr, rmarkdown, testthat (>= 2.1.0), vctrs (>= 0.6.5)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+magrittr      "covr, knitr, rlang, rmarkdown, testthat"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+memoise       "digest, aws.s3, covr, googleAuthR, googleCloudStorageR, httr,\ntestthat"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+mime          NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+modelr        "compiler, covr, ggplot2, testthat (>= 3.0.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+openssl       "curl, testthat (>= 2.1.0), digest, knitr, rmarkdown,\njsonlite, jose, sodium"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+pillar        "bit64, DBI, debugme, DiagrammeR, dplyr, formattable, ggplot2,\nknitr, lubridate, nanotime, nycflights13, palmerpenguins,\nrmarkdown, scales, stringi, survival, testthat (>= 3.1.1),\ntibble, units (>= 0.7.2), vdiffr, withr"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+pkgbuild      "covr, cpp11, knitr, Rcpp, rmarkdown, testthat (>= 3.2.0),\nwithr (>= 2.3.0)"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              Enhances                                               
+askpass       NA                                                     
+backports     NA                                                     
+base64enc     "png"                                                  
+bit           NA                                                     
+bit64         NA                                                     
+blob          NA                                                     
+brio          NA                                                     
+broom         NA                                                     
+bslib         NA                                                     
+cachem        NA                                                     
+callr         NA                                                     
+cellranger    NA                                                     
+cli           NA                                                     
+clipr         NA                                                     
+colorspace    NA                                                     
+conflicted    NA                                                     
+cpp11         NA                                                     
+crayon        NA                                                     
+curl          NA                                                     
+data.table    NA                                                     
+DBI           NA                                                     
+dbplyr        NA                                                     
+desc          NA                                                     
+diffobj       NA                                                     
+digest        NA                                                     
+dplyr         NA                                                     
+dtplyr        NA                                                     
+evaluate      NA                                                     
+farver        NA                                                     
+fastmap       NA                                                     
+fontawesome   NA                                                     
+forcats       NA                                                     
+fs            NA                                                     
+gargle        NA                                                     
+gclus         NA                                                     
+generics      NA                                                     
+ggplot2       "sp"                                                   
+glue          NA                                                     
+googledrive   NA                                                     
+googlesheets4 NA                                                     
+gtable        NA                                                     
+haven         NA                                                     
+highr         NA                                                     
+hms           NA                                                     
+htmltools     "knitr"                                                
+httr          NA                                                     
+ids           NA                                                     
+isoband       NA                                                     
+jquerylib     NA                                                     
+jsonlite      NA                                                     
+knitr         NA                                                     
+labeling      NA                                                     
+lifecycle     NA                                                     
+lmtest        NA                                                     
+lubridate     "chron, data.table, timeDate, tis, zoo"                
+magrittr      NA                                                     
+memoise       NA                                                     
+mime          NA                                                     
+modelr        NA                                                     
+openssl       NA                                                     
+pillar        NA                                                     
+pkgbuild      NA                                                     
+              License                                  License_is_FOSS License_restricts_use
+askpass       "MIT + file LICENSE"                     NA              NA                   
+backports     "GPL-2 | GPL-3"                          NA              NA                   
+base64enc     "GPL-2 | GPL-3"                          NA              NA                   
+bit           "GPL-2 | GPL-3"                          NA              NA                   
+bit64         "GPL-2 | GPL-3"                          NA              NA                   
+blob          "MIT + file LICENSE"                     NA              NA                   
+brio          "MIT + file LICENSE"                     NA              NA                   
+broom         "MIT + file LICENSE"                     NA              NA                   
+bslib         "MIT + file LICENSE"                     NA              NA                   
+cachem        "MIT + file LICENSE"                     NA              NA                   
+callr         "MIT + file LICENSE"                     NA              NA                   
+cellranger    "MIT + file LICENSE"                     NA              NA                   
+cli           "MIT + file LICENSE"                     NA              NA                   
+clipr         "GPL-3"                                  NA              NA                   
+colorspace    "BSD_3_clause + file LICENSE"            NA              NA                   
+conflicted    "MIT + file LICENSE"                     NA              NA                   
+cpp11         "MIT + file LICENSE"                     NA              NA                   
+crayon        "MIT + file LICENSE"                     NA              NA                   
+curl          "MIT + file LICENSE"                     NA              NA                   
+data.table    "MPL-2.0 | file LICENSE"                 NA              NA                   
+DBI           "LGPL (>= 2.1)"                          NA              NA                   
+dbplyr        "MIT + file LICENSE"                     NA              NA                   
+desc          "MIT + file LICENSE"                     NA              NA                   
+diffobj       "GPL-2 | GPL-3"                          NA              NA                   
+digest        "GPL (>= 2)"                             NA              NA                   
+dplyr         "MIT + file LICENSE"                     NA              NA                   
+dtplyr        "MIT + file LICENSE"                     NA              NA                   
+evaluate      "MIT + file LICENSE"                     NA              NA                   
+farver        "MIT + file LICENSE"                     NA              NA                   
+fastmap       "MIT + file LICENSE"                     NA              NA                   
+fontawesome   "MIT + file LICENSE"                     NA              NA                   
+forcats       "MIT + file LICENSE"                     NA              NA                   
+fs            "MIT + file LICENSE"                     NA              NA                   
+gargle        "MIT + file LICENSE"                     NA              NA                   
+gclus         "GPL (>= 2)"                             NA              NA                   
+generics      "MIT + file LICENSE"                     NA              NA                   
+ggplot2       "MIT + file LICENSE"                     NA              NA                   
+glue          "MIT + file LICENSE"                     NA              NA                   
+googledrive   "MIT + file LICENSE"                     NA              NA                   
+googlesheets4 "MIT + file LICENSE"                     NA              NA                   
+gtable        "MIT + file LICENSE"                     NA              NA                   
+haven         "MIT + file LICENSE"                     NA              NA                   
+highr         "GPL"                                    NA              NA                   
+hms           "MIT + file LICENSE"                     NA              NA                   
+htmltools     "GPL (>= 2)"                             NA              NA                   
+httr          "MIT + file LICENSE"                     NA              NA                   
+ids           "MIT + file LICENSE"                     NA              NA                   
+isoband       "MIT + file LICENSE"                     NA              NA                   
+jquerylib     "MIT + file LICENSE"                     NA              NA                   
+jsonlite      "MIT + file LICENSE"                     NA              NA                   
+knitr         "GPL"                                    NA              NA                   
+labeling      "MIT + file LICENSE | Unlimited"         NA              NA                   
+lifecycle     "MIT + file LICENSE"                     NA              NA                   
+lmtest        "GPL-2 | GPL-3"                          NA              NA                   
+lubridate     "GPL (>= 2)"                             NA              NA                   
+magrittr      "MIT + file LICENSE"                     NA              NA                   
+memoise       "MIT + file LICENSE"                     NA              NA                   
+mime          "GPL"                                    NA              NA                   
+modelr        "GPL-3"                                  NA              NA                   
+openssl       "MIT + file LICENSE"                     NA              NA                   
+pillar        "MIT + file LICENSE"                     NA              NA                   
+pkgbuild      "MIT + file LICENSE"                     NA              NA                   
+              OS_type MD5sum NeedsCompilation Built  
+askpass       NA      NA     "yes"            "4.4.1"
+backports     NA      NA     "yes"            "4.4.0"
+base64enc     NA      NA     "yes"            "4.4.0"
+bit           NA      NA     "yes"            "4.4.1"
+bit64         NA      NA     "yes"            "4.4.1"
+blob          NA      NA     "no"             "4.4.0"
+brio          NA      NA     "yes"            "4.4.0"
+broom         NA      NA     "no"             "4.4.1"
+bslib         NA      NA     "no"             "4.4.1"
+cachem        NA      NA     "yes"            "4.4.0"
+callr         NA      NA     "no"             "4.4.0"
+cellranger    NA      NA     "no"             "4.4.0"
+cli           NA      NA     "yes"            "4.4.1"
+clipr         NA      NA     "no"             "4.4.0"
+colorspace    NA      NA     "yes"            "4.4.1"
+conflicted    NA      NA     "no"             "4.4.0"
+cpp11         NA      NA     "no"             "4.4.1"
+crayon        NA      NA     "no"             "4.4.0"
+curl          NA      NA     "yes"            "4.4.1"
+data.table    NA      NA     "yes"            "4.4.1"
+DBI           NA      NA     "no"             "4.4.0"
+dbplyr        NA      NA     "no"             "4.4.1"
+desc          NA      NA     "no"             "4.4.0"
+diffobj       NA      NA     "yes"            "4.4.1"
+digest        NA      NA     "yes"            "4.4.1"
+dplyr         NA      NA     "yes"            "4.4.0"
+dtplyr        NA      NA     "no"             "4.4.1"
+evaluate      NA      NA     "no"             "4.4.1"
+farver        NA      NA     "yes"            "4.4.0"
+fastmap       NA      NA     "yes"            "4.4.0"
+fontawesome   NA      NA     "no"             "4.4.1"
+forcats       NA      NA     "no"             "4.4.1"
+fs            NA      NA     "yes"            "4.4.1"
+gargle        NA      NA     "no"             "4.4.1"
+gclus         NA      NA     "no"             "4.4.1"
+generics      NA      NA     "no"             "4.4.1"
+ggplot2       NA      NA     "no"             "4.4.1"
+glue          NA      NA     "yes"            "4.4.1"
+googledrive   NA      NA     "no"             "4.4.1"
+googlesheets4 NA      NA     "no"             "4.4.1"
+gtable        NA      NA     "no"             "4.4.1"
+haven         NA      NA     "yes"            "4.4.1"
+highr         NA      NA     "no"             "4.4.0"
+hms           NA      NA     "no"             "4.4.1"
+htmltools     NA      NA     "yes"            "4.4.1"
+httr          NA      NA     "no"             "4.4.0"
+ids           NA      NA     "no"             "4.4.0"
+isoband       NA      NA     "yes"            "4.4.1"
+jquerylib     NA      NA     "no"             "4.4.0"
+jsonlite      NA      NA     "yes"            "4.4.1"
+knitr         NA      NA     "no"             "4.4.1"
+labeling      NA      NA     "no"             "4.4.0"
+lifecycle     NA      NA     "no"             "4.4.0"
+lmtest        NA      NA     "yes"            "4.4.0"
+lubridate     NA      NA     "yes"            "4.4.1"
+magrittr      NA      NA     "yes"            "4.4.1"
+memoise       NA      NA     "no"             "4.4.0"
+mime          NA      NA     "yes"            "4.4.1"
+modelr        NA      NA     "no"             "4.4.0"
+openssl       NA      NA     "yes"            "4.4.1"
+pillar        NA      NA     "no"             "4.4.1"
+pkgbuild      NA      NA     "no"             "4.4.1"
+ [ reached getOption("max.print") -- omitted 81 rows ]
+
+Call:
+lm(formula = mpg ~ wt, data = mtcars)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.5432 -2.3647 -0.1252  1.4096  6.8727 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  37.2851     1.8776  19.858  < 2e-16 ***
+wt           -5.3445     0.5591  -9.559 1.29e-10 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.046 on 30 degrees of freedom
+Multiple R-squared:  0.7528,	Adjusted R-squared:  0.7446 
+F-statistic: 91.38 on 1 and 30 DF,  p-value: 1.294e-10
+
