@@ -1,3 +1,0 @@
-# Demonstrates declaring `ducksay` accessible to package end users
-
-export(ducksay)
