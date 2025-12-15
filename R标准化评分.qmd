@@ -264,9 +264,10 @@ report |>
   facet_wrap(~department) +
   theme_bw()
 
-ggplot(report, aes(x = 综合得分, fill = department)) +
-  geom_density(alpha = 0.4) +
-  facet_wrap(~department) +
+library(ggridges)
+ggplot(report, aes(x = 综合得分, y = department, fill = department)) +
+  geom_density_ridges(alpha = 0.4) +
+  # facet_wrap(~department) +
   theme_bw()
 ```
 
