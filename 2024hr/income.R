@@ -1,3 +1,14 @@
+# ---
+# title: "数据检查问题"
+# format: html
+# ---
+
+# 项目管理中心台账数据检查
+
+## 1. 数据导入
+
+#| echo: false
+#| warning: false
 # Packages Load
 if (!require('pacman')) {
   install.packages('pacman')
@@ -7,6 +18,7 @@ if (!require('pacman')) {
 }
 pacman::p_load('tidyverse')
 pacman::p_load('here')
+pacman::p_load('dplyr')
 
 
 # excle文件位置
@@ -15,81 +27,100 @@ file <- here::here('2024hr/data', 'income.xlsx')
 
 #读取excel
 data <- readxl::read_excel(file, col_names = T, sheet = 1, skip = 2)
-# glimpse(data)
+
+#抽取2到最后,1:82列
 clean_data <- data[2:nrow(data), 1:82]
-# names(clean_data)
+
+
+## 2. 数据基本结构
+# 导入后数据有 92列,抽取其中的82列。
+
+### 问题 1:合并单元格造成数据关系极为混乱
+# 因为excel文件多处单元格合并，经过数据导入后，很多数据在同一条记录内，多个列数据为空。造成数据对应关系极为混乱。很难对应同一个合同项目的数据归集。
+
+### 问题 2:列太多，数据横向查询极为不便
+# 表格列数量太多，核心数据查询非常苦难。合同，收入，回款，三个大块内容下罗列了所用部门，并横向展开为列。
+
+### 问题 3:核心数据记录导入R后丢失
+# 合同签订日期和合同总金额列在同一行时，有的行数据没有日期，或者没有合同总金额。信息检索存在严重错误。应该是同一日期有多个合同签订的情况，但是合并单元格造成了数据缺失。数据对其有一定的难度。
+
+### 问题 4:待定
+
+## 3.数据处理
+### 3.1 数据对整
+# 将签订日期和合同总金额作为核心数据，假定：有合同总金额的记录，必须有一条签订日期。如果没有，用上一个日期，向下填充。
+
+### 3.2 part0 日期与金额数据列检查
+
+part0 <- clean_data |>
+  filter(is.na(签订日期) & !is.na(合同总金额)) |>
+  select(c(1:13))
+
+part0[c(3, 13)]
+
+# 有48条记录存在有合同总金额但是没有签订日期。
+
+### 3.3 part0对齐数据，改为part1.
+# part1数据包括所有合同主体信息和，部门合同，部门收入，部门回款列信息。下一步分离合同，收入，回款信息。
+
 part1 <- clean_data |>
-  select(c(1:27)) |>
-  fill(c(1:13), .direction = 'down') |>
-  rename_with(~ str_remove_all(., "[...[:digit:]]")) |>
-  mutate(across(c(14:27), as.numeric)) |>
-  pivot_longer(cols = c(14:27), names_to = 'Department', values_to = 'Value') |>
-  drop_na()
-
-names(part1)
-names(clean_data)
-
-part2 <- clean_data |>
-  select(c(1:13, 53:66)) |>
-  fill(c(1:13), .direction = 'down') |>
-  rename_with(~ str_remove_all(., "[...[:digit:]]")) |>
-  mutate(across(c(14:27), as.numeric)) |>
-  pivot_longer(
-    cols = c(14:27),
-    names_to = 'Department',
-    values_to = 'income'
-  ) |>
-  drop_na()
-names(part2)
-
-part3 <- clean_data |>
-  select(c(1:13, 67:80)) |>
-  fill(c(1:13), .direction = 'down') |>
-  rename_with(~ str_remove_all(., "[...[:digit:]]")) |>
-  mutate(across(c(14:27), as.numeric)) |>
-  pivot_longer(cols = c(14:27), names_to = 'Department', values_to = 'cash') |>
-  drop_na()
-names(part3)
-
-# sum(part1$合同总金额)
-sum(part1$Value)
-sum(part2$income)
-sum(part3$cash)
-
-#取出核心数据
-#部门位置
-department <- pull(data[2, 3])
-#人数位置
-Number <- pull(data[2, 8])
-#前9行和倒数3行，保留2:7列
-data_raw <- data[10:(nrow(data) - 3), c(2:7)]
-#更改列名
-names(data_raw) <- c('Name', 'Leader', 'p1', 'p2', 'p3', 'p4')
-
-library(tidyr)
-data_raw <- data_raw |>
-  fill(Name, .direction = "down") |>
+  # select(c(1:13)) |>
+  filter(!is.na(合同总金额)) |>
+  fill(签订日期, .direction = 'down') |>
+  rename(合同名称 = ...6) |>
+  rename(甲方名称 = '甲方单位\n名称') |>
   mutate(
-    across(starts_with('p'), as.numeric),
-    across(where(is.character), as.factor),
-    department = department
-  )
-# data_raw
-
-rank_score <- data_raw |>
-  group_by(Name) |>
-  mutate(total = sum(p1, p2, p3, p4) / 2) |>
-  select(Name, total, department) |>
-  distinct(Name, total, department) |>
-  ungroup() |>
-  mutate(
-    rank_score = rank(-total),
-    grade = case_when(
-      rank_score <= n() * 0.23 ~ "A",
-      rank_score <= n() * 0.90 ~ "B",
-      TRUE ~ "C"
-    )
+    签订日期 = suppressWarnings(as.numeric(签订日期)),
+    合同总金额 = as.numeric(合同总金额),
+    签订日期 = as.Date(签订日期, origin = "1899-12-30"),
+    Year = as.factor(year(签订日期))
   ) |>
-  arrange(grade)
+  select(Year, everything())
 
-print(rank_score)
+nrow(part1)
+ncol(part1)
+length(part1$签订日期)
+length(part1$合同总金额)
+
+
+### 4 分离部门合同部分，逆透视
+# 使用part1数据，抽取部门部门合同部分，并清理列名称得到部门合同相关数据。
+
+depart_contact <- part1 |>
+  select(c(1:28)) |>
+  mutate(
+    across(c(15:28), as.numeric)
+  ) |>
+  rename_with(~ str_remove_all(., "[...[:digit:]]")) |>
+  pivot_longer(cols = c(15:28), names_to = 'Department', values_to = 'Value') |>
+  filter(!is.na(Value) & !Value == 0)
+#   distinct()
+part1[15:28]
+depart_contact[14:ncol(depart_contact)]
+# 部门拆分合同总金额与按照合同统计的总金额数据不一致，与excel中框选查询数值也不一致。需要根据部门详细查询数据一致性。
+
+sum(depart_contact$Value)
+sum(part1$合同总金额)
+
+
+# 按照部门分组分别查询合同总金额
+
+check_contact <- depart_contact |>
+  group_by(Department) |>
+  summarise(total = sum(Value))
+
+sum(check_contact$total)
+check_contact
+part1 <- part1 |>
+  select(1:28) |>
+  mutate(
+    across(c(14:28), as.numeric)
+  ) |>
+  rename_with(~ str_remove_all(., "[...[:digit:]]"))
+sum(part1$创作一室, na.rm = T)
+sum(part1$创作二室, na.rm = T)
+sum(part1$创作三室, na.rm = T)
+sum(part1$创作中心, na.rm = T)
+
+
+depart_contact
