@@ -264,9 +264,17 @@ report |>
   facet_wrap(~department) +
   theme_bw()
 
-library(ggridges)
+install_and_load <- function(package) {
+  if (!requireNamespace(package, quietly = TRUE)) {
+    install.packages(package)
+  }
+  library(package, character.only = TRUE)
+}
+install_and_load('ggridges')
+install_and_load('ggplot2')
+# library(ggridges)
 ggplot(report, aes(x = 综合得分, y = department, fill = department)) +
-  geom_density_ridges(alpha = 0.4) +
+  geom_density_ridges(alpha = 0.4, show.legend = FALSE) +
   # facet_wrap(~department) +
   theme_bw()
 ```
@@ -291,3 +299,5 @@ report <- within(report, {
 
 datatable(report)
 ```
+
+

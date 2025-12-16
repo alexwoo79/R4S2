@@ -200,3 +200,9 @@ bar <- ggplot(data = diamonds) +
 bar + coord_flip()
 bar + coord_polar(theta = "y")
 bar + coord_radial(expand = FALSE)
+
+
+library(pacman)
+
+pacman::p_load('vcd')
+pacman::p_loaded()
