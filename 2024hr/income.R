@@ -10,26 +10,34 @@
 #| echo: false
 #| warning: false
 # Packages Load
-if (!require('pacman')) {
-  install.packages('pacman')
-  library(pacman)
-} else {
-  library(pacman)
-}
-pacman::p_load('tidyverse')
-pacman::p_load('here')
-pacman::p_load('dplyr')
-
+# if (!require('pacman')) {
+#   install.packages('pacman')
+#   library(pacman)
+# } else {
+#   library(pacman)
+# }
+# pacman::p_load('tidyverse')
+# pacman::p_load('here')
+# pacman::p_load('dplyr')
+# pacman::p_load('ggplot2')
+library(tidyverse)
 
 # excle文件位置
-file <- here::here('2024hr/data', 'income.xlsx')
+file2 <- here::here('2024hr/data', 'income.xlsx')
 
-
+file <- here::here('2024hr/data', 'income.csv')
 #读取excel
-data <- readxl::read_excel(file, col_names = T, sheet = 1, skip = 2)
+data2 <- readxl::read_excel(file2, col_names = T, sheet = 1, skip = 2)
+data <- read.csv(file, na.strings = c('<empty>', 'NA'))
+names <- colnames(data2)
+colnames(data) <- names
 
 #抽取2到最后,1:82列
-clean_data <- data[2:nrow(data), 1:82]
+clean_data <- data[4:nrow(data), 1:82]
+str(clean_data)
+
+clean_data <- clean_data %>%
+  mutate(across(everything(), ~ ifelse(. == '', NA, .)))
 
 
 ## 2. 数据基本结构
@@ -52,75 +60,225 @@ clean_data <- data[2:nrow(data), 1:82]
 
 ### 3.2 part0 日期与金额数据列检查
 
-part0 <- clean_data |>
-  filter(is.na(签订日期) & !is.na(合同总金额)) |>
+part0 <- clean_data %>%
+  filter(is.na(签订日期) & !is.na(合同总金额)) %>%
   select(c(1:13))
 
 part0[c(3, 13)]
 
 # 有48条记录存在有合同总金额但是没有签订日期。
 
-### 3.3 part0对齐数据，改为part1.
+### 3.3 对齐数据,整理出主合同台账
 # part1数据包括所有合同主体信息和，部门合同，部门收入，部门回款列信息。下一步分离合同，收入，回款信息。
 
-part1 <- clean_data |>
-  # select(c(1:13)) |>
-  filter(!is.na(合同总金额)) |>
-  fill(签订日期, .direction = 'down') |>
-  rename(合同名称 = ...6) |>
+total_contact <- clean_data |>
+  select(
+    c(
+      区域,
+      签订日期,
+      项目名称,
+      合同编号,
+      类型,
+      contains('甲方单位\n名称'),
+      合同总金额
+    ),
+  ) |>
   rename(甲方名称 = '甲方单位\n名称') |>
+  filter(!is.na(合同总金额)) |>
   mutate(
     签订日期 = suppressWarnings(as.numeric(签订日期)),
     合同总金额 = as.numeric(合同总金额),
     签订日期 = as.Date(签订日期, origin = "1899-12-30"),
     Year = as.factor(year(签订日期))
   ) |>
-  select(Year, everything())
+  select(Year, everything()) |>
+  fill(everything())
 
-nrow(part1)
-ncol(part1)
-length(part1$签订日期)
-length(part1$合同总金额)
+total_contact$key <- seq(1, length(total_contact$合同总金额))
+total_contact
+nrow(total_contact)
+ncol(total_contact)
+length(total_contact$签订日期)
+length(total_contact$合同总金额)
+summary(total_contact)
+write_csv(total_contact, 'total_contact.csv')
 
+pacman::p_load(psych)
+describe(total_contact)
+
+# 历年合同总金额bar图
+
+library(ggplot2)
+p1 <- total_contact |>
+  group_by(Year) |>
+  summarise(Total = sum(合同总金额, na.rm = TRUE)) |>
+  ungroup() |>
+  # convert to 万元 (10,000) units; change divisor to 1000 if you prefer thousands
+  mutate(Total_wan = Total / 10000)
+
+# plot using 万元 units and formatted y-axis (commas, one decimal)
+p1 <- p1 |>
+  mutate(
+    label = scales::label_number(big.mark = ",", accuracy = 0.1)(Total_wan)
+  )
+
+p1 |>
+  ggplot(aes(x = Year, y = Total_wan)) +
+  geom_col(fill = 'skyblue') +
+  geom_text(aes(label = label), vjust = -0.3, size = 3, color = "black") +
+  labs(
+    x = '',
+    y = '合同额（万元）',
+    title = '历年新签合同额'
+  ) +
+  scale_y_continuous(
+    labels = scales::label_number(big.mark = ",", accuracy = 0.1),
+    # expand = scales::expansion(mult = c(0, 0.08))
+  ) +
+  theme_bw()
+sum(total_contact$合同总金额)
 
 ### 4 分离部门合同部分，逆透视
 # 使用part1数据，抽取部门部门合同部分，并清理列名称得到部门合同相关数据。
 
-depart_contact <- part1 |>
-  select(c(1:28)) |>
+names(clean_data)
+department_contact <- clean_data |>
+  select(
+    c(
+      区域,
+      签订日期,
+      项目名称,
+      合同编号,
+      类型,
+      contains('甲方单位\n名称'),
+      合同总金额
+    ),
+    c(14:27)
+  ) |>
   mutate(
-    across(c(15:28), as.numeric)
+    across(c(7:21), as.numeric)
   ) |>
   rename_with(~ str_remove_all(., "[...[:digit:]]")) |>
-  pivot_longer(cols = c(15:28), names_to = 'Department', values_to = 'Value') |>
-  filter(!is.na(Value) & !Value == 0)
-#   distinct()
-part1[15:28]
-depart_contact[14:ncol(depart_contact)]
-# 部门拆分合同总金额与按照合同统计的总金额数据不一致，与excel中框选查询数值也不一致。需要根据部门详细查询数据一致性。
+  rename(甲方名称 = '甲方单位\n名称') |>
+  mutate(across(c(8:21), ~ ifelse(. == 0, NA, .)))
 
-sum(depart_contact$Value)
-sum(part1$合同总金额)
-
-
-# 按照部门分组分别查询合同总金额
-
-check_contact <- depart_contact |>
-  group_by(Department) |>
-  summarise(total = sum(Value))
-
-sum(check_contact$total)
-check_contact
-part1 <- part1 |>
-  select(1:28) |>
+# 8:21列任何一列不为空，则补充其他列数据，对其部门合同数据的颗粒度。
+department_contact_T <- department_contact |>
+  filter(if_any(1:21, ~ !is.na(.))) |>
+  fill(1:7, .direction = "down") |>
+  pivot_longer(cols = c(8:21), names_to = 'Department', values_to = 'Value') |>
   mutate(
-    across(c(14:28), as.numeric)
+    签订日期 = suppressWarnings(as.numeric(签订日期)),
+    合同总金额 = as.numeric(合同总金额),
+    签订日期 = as.Date(签订日期, origin = "1899-12-30"),
+    Year = as.factor(year(签订日期))
   ) |>
-  rename_with(~ str_remove_all(., "[...[:digit:]]"))
-sum(part1$创作一室, na.rm = T)
-sum(part1$创作二室, na.rm = T)
-sum(part1$创作三室, na.rm = T)
-sum(part1$创作中心, na.rm = T)
+  select(Year, everything()) |>
+  filter(!is.na(Value))
 
 
-depart_contact
+sum(department_contact_T$Value, na.rm = T)
+
+# 合同分部门汇总
+department_table <- department_contact_T |>
+  fill(Year) |>
+  group_by(Year, Department) |>
+  summarise(Total = sum(Value, na.rm = T) / 10000)
+department_table
+
+department_total_contact <- department_contact_T |>
+  select(1:8) |>
+  distinct()
+
+# 合同总金额提取测试
+
+sum(department_contact$合同总金额, na.rm = T)
+
+library(ggplot2)
+department_table |>
+  ggplot(aes(x = Year, y = Total, fill = Department)) +
+  geom_col(color = 'black', alpha = .6) +
+  # geom_text(aes(label = Total), vjust = -0.3, size = 3, color = "black") +
+  labs(
+    x = '',
+    y = '合同额（万元）',
+    title = '各部门历年新签合同额（权益）'
+  ) +
+  scale_y_continuous(
+    labels = scales::label_number(big.mark = ",", accuracy = 0.1),
+    # expand = scales::expansion(mult = c(0, 0.08))
+  ) +
+  # coord_flip()+
+  theme_bw()
+
+
+# 收入数据提取
+
+names(clean_data)
+department_income <- clean_data |>
+  select(
+    c(
+      区域,
+      签订日期,
+      项目名称,
+      合同编号,
+      类型,
+      contains('甲方单位\n名称'),
+      合同总金额
+    ),
+    c(53:66)
+  ) |>
+  mutate(
+    across(c(7:21), as.numeric)
+  ) |>
+  rename_with(~ str_remove_all(., "[...[:digit:]]")) |>
+  rename(甲方名称 = '甲方单位\n名称') |>
+  mutate(across(c(8:21), ~ ifelse(. == 0, NA, .))) |>
+  filter(if_any(1:21, ~ !is.na(.))) |>
+  fill(c(1:7)) |>
+  pivot_longer(cols = c(8:21), names_to = 'Department', values_to = 'Income') |>
+  filter(!is.na(Income))
+
+sum(department_income$Income, na.rm = TRUE)
+
+D_income <- department_income |>
+  group_by(Department) |>
+  summarise(Total = sum(Income))
+
+D_income
+
+# 回款数据提取
+
+names(clean_data)
+department_got <- clean_data |>
+  select(
+    c(
+      区域,
+      签订日期,
+      项目名称,
+      合同编号,
+      类型,
+      contains('甲方单位\n名称'),
+      合同总金额
+    ),
+    c(67:80)
+  ) |>
+  mutate(
+    across(c(7:21), as.numeric)
+  ) |>
+  rename_with(~ str_remove_all(., "[...[:digit:]]")) |>
+  rename(甲方名称 = '甲方单位\n名称') |>
+  mutate(across(c(8:21), ~ ifelse(. == 0, NA, .))) |>
+  filter(if_any(1:21, ~ !is.na(.))) |>
+  fill(c(1:7)) |>
+  pivot_longer(cols = c(8:21), names_to = 'Department', values_to = 'Got') |>
+  filter(!is.na(Got))
+
+
+sum(department_got$Got, na.rm = TRUE)
+
+D_Got <- department_got |>
+  group_by(Department) |>
+  summarise(Total = sum(Got))
+
+D_Got
