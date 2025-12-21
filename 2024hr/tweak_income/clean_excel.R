@@ -36,7 +36,7 @@ file_path <- file.path('origin_xlsx', 'income.xlsx') # relative to this script o
 sheet_name <- '收入类台账' # sheet to read
 skip_rows <- 2 # rows to skip before the header row
 out_path <- file.path('output', 'income_cleaned.xlsx')
-
+csv_file <- file.path('output', 'income_cleaned_csv.csv')
 ## ---- Safety check ----
 if (!file.exists(file_path)) {
   stop('source file not found: ', file_path)
@@ -45,11 +45,13 @@ if (!file.exists(file_path)) {
 ## ---- Read and basic cleanup ----
 # readxl reads merged cells as NA under the merged area; we'll remove all-empty
 # rows/cols then keep rows after the very top header row if necessary.
+col_types_vec <- c(rep('text', 92)) # 92是读取后返回进去的数值，这行的目的是规避有的列被读取为logical失去数值。
 df_raw <- readxl::read_excel(
   file_path,
   sheet = sheet_name,
   skip = skip_rows,
   col_names = TRUE,
+  col_types = col_types_vec,
   .name_repair = 'unique'
 ) |>
   remove_empty(which = c('rows', 'cols'))
@@ -224,6 +226,8 @@ df_out <- df_clean |>
 wb <- createWorkbook()
 addWorksheet(wb, sheetName = sheet_name)
 writeData(wb, sheet = sheet_name, x = df_out, startRow = 1, colNames = TRUE)
+write.csv(df_out, file = csv_file, row.names = FALSE)
+
 ## ---- Add Excel data validation ----
 # Apply data validation to amount and date columns so users cannot enter invalid formats
 n_rows <- nrow(df_out)
@@ -289,5 +293,23 @@ writeData(wb, sheet = 'run_info', x = run_info, startRow = 1, colNames = TRUE)
 
 saveWorkbook(wb, out_path, overwrite = TRUE)
 
+
 ## ---- Return result for interactive sessions ----
 list(df_out = df_out, run_info = run_info)
+
+## 保存为sqlite3 数据
+if (!requireNamespace("DBI", quietly = TRUE)) {
+  install.packages("DBI")
+}
+if (!requireNamespace("RSQLite", quietly = TRUE)) {
+  install.packages("RSQLite")
+}
+library(DBI)
+library(RSQLite)
+
+con <- dbConnect(RSQLite::SQLite(), "output/income_database.db")
+
+
+dbWriteTable(con, "income", df_out)
+
+dbDisconnect(con)

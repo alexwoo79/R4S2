@@ -9,14 +9,28 @@ library(lubridate)
 library(openxlsx)
 library(janitor)
 
+
+# library(DBI)
+# library(RSQLite)
+
+# # 连接到SQLite数据库
+# con <- dbConnect(RSQLite::SQLite(), "output/income_database.db")
+
+# # 执行查询获取数据
+# query <- "SELECT * FROM income"
+# df_raw <- dbGetQuery(con, query)
+
+# # 关闭数据库连接
+# dbDisconnect(con)
+
 ## ---- Configuration ----
 # Set these before running the script
-file_path <- file.path('output', 'income_cleaned.xlsx') # relative to this script or an absolute path
-sheet_name <- '收入类台账' # sheet to read
-skip_rows <- 0 # rows to skip before the header row
+# file_path <- file.path('output', 'income_cleaned.xlsx') # relative to this script or an absolute path
+file_path <- file.path('output', 'income_cleaned_csv.csv')
+# sheet_name <- '收入类台账' # sheet to read
+# skip_rows <- 0 # rows to skip before the header row
 
-
-## ---- Safety check ----
+# ## ---- Safety check ----
 if (!file.exists(file_path)) {
   stop('source file not found: ', file_path)
 }
@@ -24,12 +38,18 @@ if (!file.exists(file_path)) {
 ## ---- Read and basic cleanup ----
 # readxl reads merged cells as NA under the merged area; we'll remove all-empty
 # rows/cols then keep rows after the very top header row if necessary.
-df_raw <- readxl::read_excel(
+# df_raw <- readxl::read_excel(
+#   file_path,
+#   sheet = sheet_name,
+#   skip = skip_rows,
+#   col_names = TRUE,
+#   .name_repair = 'unique'
+# ) |>
+#   remove_empty(which = c('rows'))
+
+df_raw <- read_csv(
   file_path,
-  sheet = sheet_name,
-  skip = skip_rows,
-  col_names = TRUE,
-  .name_repair = 'unique'
+  col_names = TRUE
 ) |>
   remove_empty(which = c('rows'))
 #————————————————————————————————————————————————————————————
@@ -52,9 +72,15 @@ result
 #————————————————————————————————————————————————————————————
 # 计算度量值
 #————————————————————————————————————————————————————————————
-df_clean <- df_raw
+df_clean <- df_raw |>
+  mutate(
+    across(where(is.numeric), ~ ifelse(is.na(.x), 0, .x))
+  )
+
 colnames(df_raw)
 options(digits = 2)
+
+
 contract_total <- round(sum(df_clean$合同总金额, na.rm = T), 2)
 contract_depart <- round(sum(df_clean[14:27], na.rm = T), 2)
 income_total <- round(sum(df_clean$收入金额, na.rm = T), 2)
@@ -345,3 +371,9 @@ df |>
   filter(区域 == '西南') |>
   group_by(year_收入日期) |>
   summarise(total = sum(咨询60, na.rm = T))
+
+tc <- sum(merge$contract)
+ti <- sum(merge$income, na.rm = T)
+ts <- sum(merge$cash, na.rm = T)
+
+print(c(tc, ti, ts))
